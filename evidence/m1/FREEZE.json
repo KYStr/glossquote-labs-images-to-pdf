@@ -1,0 +1,42 @@
+{
+  "candidate": "B20-46-M1 / 0.1.0-m1",
+  "status": "M1_NODE_CANDIDATE_BROWSER_REQUIRED",
+  "sourceFileCount": 46,
+  "sourceTotalBytes": 211142,
+  "sourceAggregateSha256": "681909d6b33af37c38021831649d44fdd9d295a1897e582cdc5b635d7547ba16",
+  "distFileCount": 13,
+  "distTotalBytes": 70472,
+  "sourceManifest": {
+    "path": "evidence/m1/frozen-sources.json",
+    "bytes": 7233,
+    "sha256": "539a05fbf1fc984cea5768577e869f320ec0c0a1cc4497f64b4d3074a9a5b3cc"
+  },
+  "distManifest": {
+    "path": "evidence/m1/frozen-dist.json",
+    "bytes": 2161,
+    "sha256": "bb7dc47f72d05e2a3a53bc1b93a05338435d636d035b8df10faf9f4983674148"
+  },
+  "evidenceManifest": {
+    "path": "evidence/m1/evidence-files.json",
+    "bytes": 3161,
+    "sha256": "4eea7f6dfc526c3849af0dc5fa2a68460745389ec7b27d12490b616b8326f38b"
+  },
+  "portableDocumentLinksChecked": 25,
+  "tests": {
+    "tests": 49,
+    "pass": 49,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "environmentFullSnapshotsEqual": true,
+  "browser": "NOT_RUN_USER_FOCUS_INCIDENT",
+  "sourceCommit": null,
+  "reviewedCommit": null,
+  "releasedCommit": null,
+  "github": "NOT_PUBLISHED",
+  "hosting": "NOT_PUBLISHED",
+  "homepage": "NOT_INTEGRATED",
+  "archive": "PRIMARY_SINGLE_COMBINED_ZIP"
+}

@@ -1,0 +1,49 @@
+{
+  "task": "B20-RP-46 / M1B",
+  "status": "OFFLINE_RELEASE_CANDIDATE_BROWSER_REQUIRED",
+  "origin": "https://image-pdf.glossquote.com",
+  "toolSlug": "images-to-pdf",
+  "sourceFiles": 52,
+  "sourceBytes": 260430,
+  "sourceAggregateSha256": "7691735f792b3bc25dfeebc1814c902d6682f2eec18d329eb08d98635e5d27f1",
+  "artifactFiles": 17,
+  "artifactBytes": 76427,
+  "artifactAggregateSha256": "0e0353c88e547a2563298852bec7c5161a4f291b03402bb4408e4cdb3b843b48",
+  "changedSourceFiles": 10,
+  "protectedFiles": 59,
+  "protectedBytesUnchanged": true,
+  "environmentFullSnapshotsEqual": true,
+  "sourceManifest": {
+    "path": "evidence/m1b/sources-final.json",
+    "bytes": 8175,
+    "sha256": "fcd8499d5dfe9e78f69a0bfd0ff6dbeccc3efb4d904268183e49fb8d8664b170"
+  },
+  "artifactManifest": {
+    "path": "evidence/m1b/artifacts-final.json",
+    "bytes": 3062,
+    "sha256": "2c402849d7d38472bab5f16bd70b0fbecb62312d1a2dac6c7db652f288777e80"
+  },
+  "releaseManifest": {
+    "path": "release-artifacts/manifest.json",
+    "bytes": 4583,
+    "sha256": "b89031e973e6b0ba6aa54b2bfe2f8852e19217c669816598a82f7d645d16184a"
+  },
+  "evidenceManifest": {
+    "path": "evidence/m1b/evidence-files.json",
+    "bytes": 3796,
+    "sha256": "8653841d01b434949633860fcb25ff756f909ad5cf3da97c6a5736c0c856d1c0"
+  },
+  "portableDocumentLinksChecked": 49,
+  "tests": {
+    "tests": 61,
+    "pass": 61,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "browser": "NOT_RUN_USER_FOCUS_INCIDENT",
+  "github": "NOT_PUBLISHED",
+  "hosting": "NOT_PUBLISHED",
+  "homepage": "NOT_INTEGRATED"
+}

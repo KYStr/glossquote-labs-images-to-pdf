@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>多張圖片合成 PDF｜排序、轉向、不裁切</title>
+  <meta name="description" content="在本機將 JPEG/PNG 照片依序放入 A4 或 Letter PDF，每張一頁，可旋轉並保留完整圖片，不需上傳。">
+  <link rel="stylesheet" href="./styles/app.css">
+  <script type="module" src="./js/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#workspace">跳到圖片工作區</a>
+  <header class="topbar">
+    <a href="https://glossquote.com/index.html">Gloss Tools</a>
+    <span class="product-name">圖片合成 PDF</span>
+    <a class="language" href="./en/index.html" lang="en" hreflang="en" title="切換語言會清除此頁資料">English</a>
+  </header>
+  <main>
+    <div class="intro">
+      <h1>把照片整理成一份順序正確的 PDF</h1>
+      <p>申請資料、收據或掃描頁，整理成一圖一頁的文件。保留完整圖片，四邊留白。</p>
+      <p class="privacy">只在此頁本機處理，不上傳、不儲存在網站。離開或切換語言會清除此頁資料。</p>
+    </div>
+    <noscript><p class="notice">此工具需要 JavaScript 才能在本機檢查圖片並建立 PDF。請啟用後重新載入。</p></noscript>
+    <section class="workspace" id="workspace" aria-label="圖片與 PDF 工作區">
+      <section class="sources" aria-labelledby="sources-heading">
+        <div class="section-heading"><h2 id="sources-heading">頁面順序</h2><button type="button" id="clear">清除全部</button></div>
+        <label class="file-label" for="files">加入 JPEG / PNG</label>
+        <input type="file" id="files" accept="image/jpeg,image/png,.jpg,.jpeg,.png" multiple aria-describedby="file-help">
+        <p id="file-help" class="help">最多 20 張，每張 8 MiB，合計 64 MiB。先整批檢查，再逐張處理。</p>
+        <p id="count" class="measurement">0 張圖片 · 0 MiB / 64 MiB</p>
+        <p id="list-empty" class="empty">加入圖片後，可用上移、下移調整交件順序。</p>
+        <ol id="image-list" aria-label="依此順序建立 PDF 頁面"></ol>
+      </section>
+      <section class="preview-region" aria-labelledby="preview-heading">
+        <div class="section-heading"><h2 id="preview-heading">頁面預覽</h2><span id="selected-page"></span></div>
+        <p id="preview-message" class="help">加入圖片後，在此檢查一圖一頁的配置。</p>
+        <div class="paper-stage"><div id="paper" class="paper" role="img" aria-label="紙張配置摘要">
+          <div id="image-fit" class="image-fit" hidden><span id="image-summary"></span><img id="photo-preview" alt="" hidden></div>
+          <span id="paper-empty" class="paper-empty">一張圖片，一頁 PDF</span>
+        </div></div>
+        <p id="paper-summary" class="measurement"></p>
+        <button type="button" id="preview-photo" disabled>預覽這頁照片</button>
+        <p class="help">預覽只處理目前這張。切換頁面或設定會釋放預覽；圖片不會裁切。</p>
+      </section>
+      <section class="settings" aria-labelledby="settings-heading">
+        <h2 id="settings-heading">文件設定</h2>
+        <fieldset><legend>紙張</legend><label><input type="radio" name="paper" value="A4" checked> A4</label><label><input type="radio" name="paper" value="Letter"> US Letter</label></fieldset>
+        <fieldset><legend>頁面方向</legend><label><input type="radio" name="direction" value="portrait" checked> 直向</label><label><input type="radio" name="direction" value="landscape"> 橫向</label></fieldset>
+        <p>每張圖片各佔一頁，依比例縮放、置中。固定白底，四邊各留 10 mm。</p>
+        <details><summary>檔案限制與注意事項</summary><p>靜態 JPEG / PNG；單張最多 1,600 萬像素，任一邊最多 8,192 px。不支援動態圖片、既有 PDF、OCR、加密、簽章或列印。</p><p>透明區會轉成白色，照片重新編碼為 JPEG，可能有些微畫質改變。小圖可能放大，工具不會提升原始清晰度。瀏覽器的記憶體或編碼限制也可能使處理失敗。</p></details>
+      </section>
+      <section class="actionbar" aria-label="建立與下載 PDF">
+        <div class="actions"><button type="button" id="generate" class="primary" disabled>產生 PDF</button><button type="button" id="cancel" hidden>取消處理</button><button type="button" id="download" hidden>下載 PDF</button></div>
+        <p id="status" role="status" aria-live="polite">加入要合併的 JPEG 或 PNG；順序可在下一步調整。</p>
+        <p id="error" class="error" role="alert" hidden></p>
+        <progress id="progress" max="1" value="0" aria-label="圖片處理進度" hidden></progress>
+        <p id="result-summary" class="measurement" hidden></p>
+        <p class="help">固定下載檔名：images-document.pdf。請下載後確認可閱讀、頁數與順序。已交給瀏覽器的下載無法撤回；清除只釋放本頁參照，不會刪除下載資料夾或保證記憶體抹除。</p>
+      </section>
+    </section>
+    <section class="faq" aria-labelledby="faq-heading">
+      <h2 id="faq-heading">常見問題</h2>
+      <details><summary>圖片會被裁切或放大嗎？</summary><p>不裁切；會按比例縮放至頁面邊界內並置中，剩餘位置留白。小圖可能放大，但不會增加照片細節。</p></details>
+      <details><summary>照片方向會照相機方向嗎？</summary><p>先使用支援的 EXIF 方向，再套用你選的額外旋轉。瀏覽器解碼尺寸與方向不符時會停止。請用照片預覽檢查鏡像與閱讀方向。</p></details>
+      <details><summary>PDF 會留下檔名或 GPS 資料嗎？</summary><p>不會加入來源檔名或照片 metadata；PDF 只含重新編碼的頁面影像。影像畫面中的姓名、地址等內容仍會保留，請自行檢查。</p></details>
+    </section>
+  </main>
+  <footer>Gloss Tools by GlossQuote · 本地候選版，尚未公開發布。</footer>
+</body>
+</html>

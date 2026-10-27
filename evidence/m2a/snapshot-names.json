@@ -1,0 +1,8 @@
+{
+  "HANDOFF": {
+    "path": "before-files/HANDOFF.md.before",
+    "reason": "Raw byte snapshot, not a relocated rendered Markdown document",
+    "bytes": 14685,
+    "sha256": "490652c43e83a9533f14cc4471c0582816c8dabb9d9f05fc02b4c312438d7587"
+  }
+}

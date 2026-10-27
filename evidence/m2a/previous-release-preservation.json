@@ -1,0 +1,96 @@
+{
+  "status": "PASS",
+  "task": "B20-46-M2A",
+  "original": "release-artifacts",
+  "archive": "evidence/m2a/previous-release-artifacts",
+  "manifestSha256": "b89031e973e6b0ba6aa54b2bfe2f8852e19217c669816598a82f7d645d16184a",
+  "files": [
+    {
+      "path": "manifest.json",
+      "bytes": 4583,
+      "sha256": "b89031e973e6b0ba6aa54b2bfe2f8852e19217c669816598a82f7d645d16184a"
+    },
+    {
+      "path": "site/_headers",
+      "bytes": 329,
+      "sha256": "5af27975384df8203544069f2e9522ab12fd82402f3d7e222692cccdee2ad3e0"
+    },
+    {
+      "path": "site/en/index.html",
+      "bytes": 6872,
+      "sha256": "6fe37b60a9bd8764ca1d0811e3151d344c05fb8900288b7a9574e6dc9704dfe9"
+    },
+    {
+      "path": "site/index.html",
+      "bytes": 6583,
+      "sha256": "6a940a4e6d7232cad82bd41eed873de8b40e9f67ee98b9ae23ce165121832975"
+    },
+    {
+      "path": "site/js/app.js",
+      "bytes": 15734,
+      "sha256": "313df718c1eb79dd693730c36d055125b67d26e8c89ebc622b8856d7c6896a13"
+    },
+    {
+      "path": "site/js/browser-raster.mjs",
+      "bytes": 740,
+      "sha256": "60974e05c50307e5ae9f601eabc5eaabacb5ca5fc50a8b299392fb17ecad5c02"
+    },
+    {
+      "path": "site/js/core/create-pdf.mjs",
+      "bytes": 4691,
+      "sha256": "d7ffd740fe87b49ca426459917dfd9d5a1067fe7b59cfb3f65598b7daec3b5c8"
+    },
+    {
+      "path": "site/js/core/errors.mjs",
+      "bytes": 411,
+      "sha256": "914b9ea85d7087c424a21889b612a905182d1817f6a1a76ec36b08999859ccc2"
+    },
+    {
+      "path": "site/js/core/image-preflight.mjs",
+      "bytes": 10545,
+      "sha256": "45cb36574eb6c67800e933973c5646ca3c8435b0a67f68912876456d6dd7c624"
+    },
+    {
+      "path": "site/js/core/output-state.mjs",
+      "bytes": 2239,
+      "sha256": "4d37a917e7f9dff895c61730f1df7ff0d815c203291aab9916036d3407d75561"
+    },
+    {
+      "path": "site/js/core/page-layout.mjs",
+      "bytes": 1254,
+      "sha256": "50df1c2169932954a772aebf858cfa2bfa2a41641f525238edc00acaeb0ba2ba"
+    },
+    {
+      "path": "site/js/core/pdf-writer.mjs",
+      "bytes": 3878,
+      "sha256": "f43a0a11bcc9e670328740d70c1ddb0ab43a808bcff70942c673d170aa20e87b"
+    },
+    {
+      "path": "site/js/core/selection.mjs",
+      "bytes": 755,
+      "sha256": "7dad929cd97dcd2c952e7b9f83a6b783906b9ce14b652a1cca6d8cd984c47886"
+    },
+    {
+      "path": "site/js/i18n.mjs",
+      "bytes": 8864,
+      "sha256": "905d373719c3c3f6f35890d384e5b5f875c04484ed06a873f42ba0c49064300d"
+    },
+    {
+      "path": "site/robots.txt",
+      "bytes": 77,
+      "sha256": "89e4711ae197825672f248f230670063a389413971480ddab6458189508a89b9"
+    },
+    {
+      "path": "site/sitemap.xml",
+      "bytes": 249,
+      "sha256": "9a6d24d3470c4d0c1305d80e87ea99d97395816e9d40b515add8a8df55de7420"
+    },
+    {
+      "path": "site/styles/app.css",
+      "bytes": 8623,
+      "sha256": "644919f479ccaf9b778504d487ac0fb60d6905a36fbe943ca50758a6680a965f"
+    }
+  ],
+  "oldEvidence": "evidence/m1b/artifacts-final.json",
+  "preservation": "full bytes retained; no deletion or overwrite"
+}

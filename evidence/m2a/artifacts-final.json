@@ -1,0 +1,95 @@
+{
+  "files": [
+    {
+      "path": "release-artifacts/manifest.json",
+      "bytes": 4726,
+      "sha256": "b5b5b9f08c7821c39554098ca95a59945a5840030d54768124f52739b8027f59"
+    },
+    {
+      "path": "release-artifacts/site/_headers",
+      "bytes": 329,
+      "sha256": "5af27975384df8203544069f2e9522ab12fd82402f3d7e222692cccdee2ad3e0"
+    },
+    {
+      "path": "release-artifacts/site/_redirects",
+      "bytes": 65,
+      "sha256": "9e47a2579b08f461b1124de1e42a1bde7a79ca29d77401104f6f432d8be90e1e"
+    },
+    {
+      "path": "release-artifacts/site/en/index.html",
+      "bytes": 6829,
+      "sha256": "a233afe99bf3ed63f905fcbc5e684ac0853f4a01f006cb4cac8025e53dc854f5"
+    },
+    {
+      "path": "release-artifacts/site/index.html",
+      "bytes": 6540,
+      "sha256": "b2941fc9558ef01533bf0b81f439de31b650e8545fe194691c1ae82da3263e21"
+    },
+    {
+      "path": "release-artifacts/site/js/app.js",
+      "bytes": 15734,
+      "sha256": "313df718c1eb79dd693730c36d055125b67d26e8c89ebc622b8856d7c6896a13"
+    },
+    {
+      "path": "release-artifacts/site/js/browser-raster.mjs",
+      "bytes": 740,
+      "sha256": "60974e05c50307e5ae9f601eabc5eaabacb5ca5fc50a8b299392fb17ecad5c02"
+    },
+    {
+      "path": "release-artifacts/site/js/core/create-pdf.mjs",
+      "bytes": 4691,
+      "sha256": "d7ffd740fe87b49ca426459917dfd9d5a1067fe7b59cfb3f65598b7daec3b5c8"
+    },
+    {
+      "path": "release-artifacts/site/js/core/errors.mjs",
+      "bytes": 411,
+      "sha256": "914b9ea85d7087c424a21889b612a905182d1817f6a1a76ec36b08999859ccc2"
+    },
+    {
+      "path": "release-artifacts/site/js/core/image-preflight.mjs",
+      "bytes": 10545,
+      "sha256": "45cb36574eb6c67800e933973c5646ca3c8435b0a67f68912876456d6dd7c624"
+    },
+    {
+      "path": "release-artifacts/site/js/core/output-state.mjs",
+      "bytes": 2239,
+      "sha256": "4d37a917e7f9dff895c61730f1df7ff0d815c203291aab9916036d3407d75561"
+    },
+    {
+      "path": "release-artifacts/site/js/core/page-layout.mjs",
+      "bytes": 1254,
+      "sha256": "50df1c2169932954a772aebf858cfa2bfa2a41641f525238edc00acaeb0ba2ba"
+    },
+    {
+      "path": "release-artifacts/site/js/core/pdf-writer.mjs",
+      "bytes": 3878,
+      "sha256": "f43a0a11bcc9e670328740d70c1ddb0ab43a808bcff70942c673d170aa20e87b"
+    },
+    {
+      "path": "release-artifacts/site/js/core/selection.mjs",
+      "bytes": 755,
+      "sha256": "7dad929cd97dcd2c952e7b9f83a6b783906b9ce14b652a1cca6d8cd984c47886"
+    },
+    {
+      "path": "release-artifacts/site/js/i18n.mjs",
+      "bytes": 8864,
+      "sha256": "905d373719c3c3f6f35890d384e5b5f875c04484ed06a873f42ba0c49064300d"
+    },
+    {
+      "path": "release-artifacts/site/robots.txt",
+      "bytes": 77,
+      "sha256": "89e4711ae197825672f248f230670063a389413971480ddab6458189508a89b9"
+    },
+    {
+      "path": "release-artifacts/site/sitemap.xml",
+      "bytes": 249,
+      "sha256": "9a6d24d3470c4d0c1305d80e87ea99d97395816e9d40b515add8a8df55de7420"
+    },
+    {
+      "path": "release-artifacts/site/styles/app.css",
+      "bytes": 8623,
+      "sha256": "644919f479ccaf9b778504d487ac0fb60d6905a36fbe943ca50758a6680a965f"
+    }
+  ],
+  "aggregateSha256": "c58f1c9c771981405c953020642c56c5e39a8c2a8992b81571a2613e4c899e3b"
+}

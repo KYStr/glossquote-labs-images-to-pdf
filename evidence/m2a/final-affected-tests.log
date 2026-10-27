@@ -1,0 +1,29 @@
+✔ release bilingual SEO is reciprocal; only the exact candidate footer changes in body (127.9521ms)
+✔ release closed assets and exact security headers/robots/sitemap; runtime bytes identical (86.1845ms)
+✔ release manifest fixed schema, sorted complete source/site hashes; deterministic rebuild and independent roots (234.7403ms)
+✔ release rejects modified asset and leaves every existing output byte unchanged (139.8915ms)
+✔ asset + manifest coordinated tamper cannot redefine expected bytes (127.3339ms)
+✔ redirects reject changed target and preserve damaged outputs (114.0934ms)
+✔ redirects reject extra line and preserve damaged outputs (115.6808ms)
+✔ redirects reject missing line and preserve damaged outputs (122.7444ms)
+✔ redirects reject CRLF line endings and preserve damaged outputs (121.5729ms)
+✔ redirects reject missing final LF and preserve damaged outputs (119.8494ms)
+✔ redirect + manifest coordinated hash tamper cannot redefine allowed routes (258.3645ms)
+✔ release rejects missing/extra/unknown directories/unmanaged output, preserving all fixture files (469.4387ms)
+✔ manifest wrong origin/schema/mode/slug, unsafe/duplicate paths and extra fields are rejected (725.8608ms)
+✔ source bytes/security constants drift rejected, even if manifest/source and site all match tampering (129.0172ms)
+✔ source unknown/missing assets rejected before writing output (49.9421ms)
+✔ junctions in input, output and output ancestor are rejected without modifying links/targets (200.2362ms)
+✔ semantic counterexamples: misplaced/commented/duplicate/wrong language SEO and wrong URLs fail (72.043ms)
+✔ release footer transformation is confined to one exact allowlisted parsed node (3.3465ms)
+✔ Worker config matches tool 42 assets-only shape with only tool-specific name and domain (0.5851ms)
+✔ Worker config drift fails before output mutation, including routes, telemetry, bindings and fallback (366.633ms)
+✔ CLI build/check succeed on task-owned copy; no args/wrong mode/extra args reject without mutation (910.5945ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4636.3588

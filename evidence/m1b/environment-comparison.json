@@ -1,0 +1,8 @@
+{
+  "Status": "PASS",
+  "FullSnapshotsEqual": true,
+  "UserPathHash": "3efe0b0eba15a12d5555fb191a204ce0048f87381d73108bac1d6d5d05b67ffb",
+  "MachinePathHash": "52d7cb0c3e02b67714f1b0caefc8f92d5d2c365bb2513dc537d42207d8b56eb8",
+  "UserEnvironmentKeySha256": "3a36b632b9e0143f2ff2b9e1c5b964e89bf192a4a3aa3ebc93ea8d0314ee7e5a",
+  "MachineEnvironmentKeySha256": "a0f49688069fd5a21146e94fd22764caedcd3ffbe25dc60c716a6a398673ac82"
+}

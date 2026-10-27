@@ -1,0 +1,783 @@
+diff --git a/.gitignore b/.gitignore
+--- a/.gitignore
++++ b/.gitignore
+@@ -1,3 +1,4 @@
+ dist/
+ node_modules/
+ *.log
++release-artifacts/
+diff --git a/HANDOFF.md b/HANDOFF.md
+--- a/HANDOFF.md
++++ b/HANDOFF.md
+@@ -72,3 +72,30 @@
+ - 環境基線：guard Status PASS；已存 evidence/m1/environment-before.json。第一次 shell wrapper 誤用未設定的 LASTEXITCODE 而拋錯；guard 本身沒有失敗，改以 script success 與 JSON Status 驗證後成功存檔。未做任何持久環境寫入。
+ 
+ 初始交接於本輪進入時為「規格已準備，尚未實作／驗收／公開／部署」；本節保留實際進展和前期 wrapper/patch 錯誤。規格文件的初始狀態標示未在允許範圍內更新，以本 HANDOFF 和固定證據索引為本輪事實。真瀏覽器待驗不等於必要 gate 已豁免。
++
++## M1B／B20-RP-46 離線發布準備（2026-10-23 追加）
++
++本輪以最新 `.runs/batch20-release-prep-2026-10-23/TASK.md` 為精確範圍。M1段、舊證據與舊freeze全部保留歷史身分，沒有把原產品改版或瀏覽器待驗改成PASS。本輪仍未進入M2／M3。
++
++實際差異：package新增build:release/check:release（保留原scripts及產品version），.gitignore新增release-artifacts；新增 `scripts/release.mjs`、`scripts/release-html.mjs`、`scripts/release-baseline.json`、`scripts/verify-release.mjs`、`test/release.test.mjs` 及 [M1B-RELEASE](M1B-RELEASE.md)；TASK-ENTRY與本HANDOFF追加本輪狀態。其他原scripts/tests沒有修改。新增證據只在evidence/m1b，產物只在release-artifacts。六份規格／AGENTS／docs、public/dist、舊evidence及兄弟工具不在修改範圍。
++
++原生runtime與兩語可見candidate聲明保留；release只改HTML head的index,follow/canonical/互返hreflang，新增robots/sitemap/_headers。固定預定origin `https://image-pdf.glossquote.com`，slug `images-to-pdf`。site 16檔，加同層manifest為17檔；manifest固定schemaVersion1/mode release-candidate、完整public sourceFiles與site files bytes/SHA，沒有時間、隨機數、絕對路徑。安全headers依M1 serve的CSP與固定header設定，僅索引header不同。
++
++checker不是只比manifest：來源受M1 pin約束、整份HTML解析語義、產物依合法來源重新生成expected bytes、原始manifest及所有site bytes完整比較。source、asset或manifest任何污染都拒絕。build完整preflight後僅新建；既有合法同輸入可重用，未知／缺失／修改輸出保留並報錯，不提供自動刪除或覆寫恢復。
++
++|本輪實際命令|exit|結果|
++|---|---:|---|
++|node --test test/release.test.mjs|0|12/12新測試PASS，全部離線副本負例|
++|npm test（最後固定版本）|0|61 tests／61 pass／0 fail,cancelled,skipped,todo；原49+本輪12|
++|npm run check|0|13 public files，原preview noindex／本地資源與新增ESM語法檢查|
++|npm run build:release|0|獨立release-candidate site 16檔+同層manifest；未serve／deploy|
++|npm run check:release|0|固定origin、來源、完整內容／SEO／安全配置與manifest重驗通過|
++|environment guard 前後／完整Snapshots比較|0|PASS／完全相同；PATH型別、長度、ephemeral count與全Environment fingerprint未變|
++
++最後四個npm命令由 `node scripts/verify-release.mjs` 執行一輪，子程序shell:false/windowsHide:true，Node v24.14.0。原preview build沒有重跑。可機器核對的命令／exit/count/log SHA見 [final-commands](evidence/m1b/final-commands.json)；環境快照見 [before](evidence/m1b/environment-before.json)、[after](evidence/m1b/environment-after.json)、[comparison](evidence/m1b/environment-comparison.json)。初次HTML parser smoke的exit1和修正保留於 [DEVELOPMENT](evidence/m1b/DEVELOPMENT.md)，不刪歷史失敗。
++
++完整來源差異與固定來源bytes/SHA由最後audit記於 [source-changes](evidence/m1b/source-changes.json)、[sources-final](evidence/m1b/sources-final.json)，產物逐檔bytes/SHA見 [artifacts-final](evidence/m1b/artifacts-final.json) 及 [manifest](release-artifacts/manifest.json)。manifest SHA-256：`b89031e973e6b0ba6aa54b2bfe2f8852e19217c669816598a82f7d645d16184a`；pinned input文件 SHA-256：`513b9cc32bb9f833d61195692b0a5dd2f8ef57af6b932e95bf6b2e000dd3a4bb`。
++
++必要真browser/Canvas/JPEG/PDF viewer/視覺/keyboard/實際下載/Network/Storage/hosting header/原生/真機 gates仍 **NOT_RUN_USER_FOCUS_INCIDENT**。`_headers`配置通過不等於實際HTTP headers已驗。沒有GitHub／source commit／reviewed/released commit、部署或首頁發布；單一ZIP仍由主代理整合。
++
++需要主代理後續決定：核准的真正隔離驗收機制與必要browser gates完成後，才另行M2發布放行。本輪沒有新依賴或權限需求。若未來來源刻意改版或首次I/O失敗留下不完整候選，需主代理另設有界baseline／輸出恢復任務；本工具拒絕自行清除或擴權。
+diff --git a/M1B-RELEASE.md b/M1B-RELEASE.md
+new file mode 100644
+--- /dev/null
++++ b/M1B-RELEASE.md
+@@ -0,0 +1,40 @@
++# M1B：離線發布準備候選
++
++2026-10-23，B20-RP-46。預定 origin 固定為 `https://image-pdf.glossquote.com`，toolSlug `images-to-pdf`。網址尚未上線；這不是 M2 公開來源／部署放行，也不代表必要瀏覽器驗收通過。
++
++## 重現與驗證
++
++使用現有 Node.js 24+ 與 npm，不需 install；在本工具目錄執行：
++
++```text
++npm test
++npm run check
++npm run build:release
++npm run check:release
++```
++
++兩個 release scripts 分別是 `node scripts/release.mjs build` 和 `node scripts/release.mjs check`。缺少 mode、未知 mode、額外參數全部拒絕；沒有 origin／部署／認證參數，也不讀環境變數選擇網址。既有 test/check/build/dev 保留原行為。`node scripts/verify-release.mjs` 將上述四個命令的 exit/count/log hash 寫入新 `evidence/m1b/`，不碰 M1 證據。
++
++輸出：[release-artifacts/site/](release-artifacts/site/index.html)，共16個站點檔；同層的 [manifest.json](release-artifacts/manifest.json) 不放入 site。未來的瀏覽器驗收者應使用這個 **site 目錄**，由主代理確認的隔離機制載入。現有 `npm run dev` 仍服務原 preview dist，不能以它的 noindex headers 當成 release `_headers` 的實際 hosting 證據。本輪沒有啟動它。
++
++## 輸入與輸出界線
++
++來源只取原 public 的13檔閉合 allowlist；[release-baseline.json](scripts/release-baseline.json) 釘住M1受驗版本的完整 bytes/SHA，以及 `scripts/serve.mjs` 的來源指紋。來源改變會拒絕，不能用改掉輸出 manifest 的方式重新定義合法來源。之後若有另行核准的產品修正，須由主代理重新審核 baseline 與新候選，不會自動接受。
++
++兩語HTML僅更動head的robots與canonical/hreflang links；title/description/H1、html lang、body、可見「候選／尚未公開」聲明保持原文。canonical 指向 `/index.html` 和 `/en/index.html`；兩頁皆列 zh-Hant/en/x-default，x-default 中文。其餘 JS/CSS 全部保持M1逐byte一致。新增 robots.txt 明確Allow及Sitemap；sitemap只列兩個canonical、沒有lastmod。
++
++原 public 沒有 `_headers`，因此引用既有 `scripts/serve.mjs` 的完整 `CSP` 常數，並保留 `X-Content-Type-Options: nosniff`、`Referrer-Policy: no-referrer`、`Cache-Control: no-store`；只有 `X-Robots-Tag` 變成 `index, follow`。原serve來源SHA-256是 `f71dce3a8ddcab5e604c04ec36c615b7c882d629e0f4ce5f299756c58c4d5c54`。connect-src/script-src/img-src data/blob規則沒有放寬。`_headers`只是靜態配置，並非已驗到真實hosting headers。
++
++第一次build先完整檢查所有來源和既有輸出，再以exclusive create寫入新目錄，manifest最後寫入。不提供force／刪除／修復／覆寫路徑；既有合法同輸入候選可重建且bytes一致（直接重用），被改動／不完整／未知輸出則拒絕並保留所有檔案。若首次寫入遇到I/O中斷，可能留下不完整新候選；後續會安全拒絕，應交主代理決定有界恢復，不能默默清除。
++
++## 已執行證據與未驗項
++
++針對本輪的release測試12/12通過；最後完整 `npm test` 61/61，check/build:release/check:release全部exit0。測試涵蓋雙語SEO互返／固定domain、完整文件語義反例、head以外與runtime保持原bytes、兩個獨立副本的確定性、manifest與asset同改、source/serve drift、缺檔／多檔／未知目錄／unmanaged output、junction、CLI拒絕參數。所有負例僅對 `test/.release-*` 臨時副本操作，沒有污染真正public/dist。
++
++命令與原始輸出見 [final-commands.json](evidence/m1b/final-commands.json)、[test log](evidence/m1b/final-test.log)、[check log](evidence/m1b/final-check.log)、[build log](evidence/m1b/final-build-release.log)、[release check log](evidence/m1b/final-check-release.log)。開發時一個 tokenizer boolean-attribute smoke 失敗及修正紀錄保留於 [DEVELOPMENT](evidence/m1b/DEVELOPMENT.md)。最後完整suite只有本次契約要求的一輪，沒有重跑原preview build。
++
++環境guard前後PASS、完整Snapshots相同，見 [比較](evidence/m1b/environment-comparison.json)。來源與產物的完整bytes/SHA清單分別記於 [sources-final](evidence/m1b/sources-final.json)／[artifacts-final](evidence/m1b/artifacts-final.json)，本輪差異見 [source-changes](evidence/m1b/source-changes.json)；這些由最後背景audit生成，與M1凍結身分分開。
++
++正式候選manifest SHA-256：`b89031e973e6b0ba6aa54b2bfe2f8852e19217c669816598a82f7d645d16184a`。它不是自我可信的證書；checker每次從M1 pinned source重建expected bytes、解析全文件SEO並重算實際產物，拒絕manifest與資產協同竄改。
++
++真瀏覽器／視覺／Canvas JPEG／EXIF／PDF viewer／實際下載／Network／Storage／hosting headers／原生／真機均為 **NOT_RUN_USER_FOCUS_INCIDENT**。原M1 [瀏覽器gates](evidence/m1/BROWSER-GATES.md)仍適用。沒有啟動server/browser/CUA/IAB/CDP/native，沒有隔離實驗、憑證讀取、安裝、付費、Windows/Git/auth持久設定、GitHub、部署或正式首頁更動。requested `gpt-6.1-sol/max`；backend身分未獨立確認，沒有改模型、另開chat或委派。
+diff --git a/package.json b/package.json
+--- a/package.json
++++ b/package.json
+@@ -8,6 +8,8 @@
+     "test": "node --test test/*.test.mjs",
+     "check": "node scripts/check.mjs",
+     "build": "node scripts/build.mjs",
+-    "dev": "node scripts/serve.mjs"
++    "dev": "node scripts/serve.mjs",
++    "build:release": "node scripts/release.mjs build",
++    "check:release": "node scripts/release.mjs check"
+   }
+ }
+diff --git a/scripts/release-baseline.json b/scripts/release-baseline.json
+new file mode 100644
+--- /dev/null
++++ b/scripts/release-baseline.json
+@@ -0,0 +1,75 @@
++{
++  "schemaVersion": 1,
++  "publicFiles": [
++    {
++      "path": "en/index.html",
++      "bytes": 6512,
++      "sha256": "0c717c5568258ec6c87d832810127d472028f0650e343b6236f8e3529fdabf18"
++    },
++    {
++      "path": "index.html",
++      "bytes": 6226,
++      "sha256": "400c6a9ad12bf823e08ffbe716f8e22cbaff597ba25a2ce63f90bb2db17a2e0a"
++    },
++    {
++      "path": "js/app.js",
++      "bytes": 15734,
++      "sha256": "313df718c1eb79dd693730c36d055125b67d26e8c89ebc622b8856d7c6896a13"
++    },
++    {
++      "path": "js/browser-raster.mjs",
++      "bytes": 740,
++      "sha256": "60974e05c50307e5ae9f601eabc5eaabacb5ca5fc50a8b299392fb17ecad5c02"
++    },
++    {
++      "path": "js/core/create-pdf.mjs",
++      "bytes": 4691,
++      "sha256": "d7ffd740fe87b49ca426459917dfd9d5a1067fe7b59cfb3f65598b7daec3b5c8"
++    },
++    {
++      "path": "js/core/errors.mjs",
++      "bytes": 411,
++      "sha256": "914b9ea85d7087c424a21889b612a905182d1817f6a1a76ec36b08999859ccc2"
++    },
++    {
++      "path": "js/core/image-preflight.mjs",
++      "bytes": 10545,
++      "sha256": "45cb36574eb6c67800e933973c5646ca3c8435b0a67f68912876456d6dd7c624"
++    },
++    {
++      "path": "js/core/output-state.mjs",
++      "bytes": 2239,
++      "sha256": "4d37a917e7f9dff895c61730f1df7ff0d815c203291aab9916036d3407d75561"
++    },
++    {
++      "path": "js/core/page-layout.mjs",
++      "bytes": 1254,
++      "sha256": "50df1c2169932954a772aebf858cfa2bfa2a41641f525238edc00acaeb0ba2ba"
++    },
++    {
++      "path": "js/core/pdf-writer.mjs",
++      "bytes": 3878,
++      "sha256": "f43a0a11bcc9e670328740d70c1ddb0ab43a808bcff70942c673d170aa20e87b"
++    },
++    {
++      "path": "js/core/selection.mjs",
++      "bytes": 755,
++      "sha256": "7dad929cd97dcd2c952e7b9f83a6b783906b9ce14b652a1cca6d8cd984c47886"
++    },
++    {
++      "path": "js/i18n.mjs",
++      "bytes": 8864,
++      "sha256": "905d373719c3c3f6f35890d384e5b5f875c04484ed06a873f42ba0c49064300d"
++    },
++    {
++      "path": "styles/app.css",
++      "bytes": 8623,
++      "sha256": "644919f479ccaf9b778504d487ac0fb60d6905a36fbe943ca50758a6680a965f"
++    }
++  ],
++  "securitySource": {
++    "path": "scripts/serve.mjs",
++    "bytes": 2214,
++    "sha256": "f71dce3a8ddcab5e604c04ec36c615b7c882d629e0f4ce5f299756c58c4d5c54"
++  }
++}
+diff --git a/scripts/release-html.mjs b/scripts/release-html.mjs
+new file mode 100644
+--- /dev/null
++++ b/scripts/release-html.mjs
+@@ -0,0 +1,146 @@
++// A narrow static HTML tokenizer for semantic checks, not a browser/DOM substitute.
++// Comments and raw-text script/style bodies cannot contribute fake SEO elements.
++const VOID = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr']);
++function invalid() { throw new Error('RELEASE_HTML_INVALID'); }
++function attributes(text) {
++  const out = Object.create(null);
++  let at = 0;
++  while (at < text.length) {
++    while (/\s/.test(text[at] ?? '') && at < text.length) at++;
++    if (at === text.length) break;
++    const key = /^[^\s"'<>/=]+/.exec(text.slice(at))?.[0];
++    if (!key) invalid();
++    at += key.length;
++    const name = key.toLowerCase();
++    if (Object.hasOwn(out, name)) invalid();
++    const afterName = at;
++    while (at < text.length && /\s/.test(text[at])) at++;
++    let value = '';
++    if (text[at] === '=') {
++      at++;
++      while (at < text.length && /\s/.test(text[at])) at++;
++      if (text[at] === '"' || text[at] === "'") {
++        const quote = text[at++], end = text.indexOf(quote, at);
++        if (end < 0) invalid();
++        value = text.slice(at, end); at = end + 1;
++      } else {
++        value = /^[^\s"'=<>`]+/.exec(text.slice(at))?.[0];
++        if (!value) invalid();
++        at += value.length;
++      }
++    } else at = afterName; // Boolean attributes leave the separating whitespace for the next iteration.
++    if (at < text.length && !/\s/.test(text[at])) invalid();
++    out[name] = value;
++  }
++  return out;
++}
++export function parseStaticHtml(html) {
++  const tokens = [], stack = [];
++  let at = 0;
++  while (at < html.length) {
++    if (stack.at(-1)?.name === 'script' || stack.at(-1)?.name === 'style') {
++      const name = stack.at(-1).name;
++      const closing = new RegExp(`</${name}\\s*>`, 'ig'); closing.lastIndex = at;
++      const match = closing.exec(html);
++      if (!match) invalid();
++      at = match.index;
++    } else {
++      const next = html.indexOf('<', at);
++      if (next < 0) break;
++      at = next;
++    }
++    if (html.startsWith('<!--', at)) {
++      const end = html.indexOf('-->', at + 4);
++      if (end < 0) invalid();
++      at = end + 3; continue;
++    }
++    if (/^<!doctype\s+html\s*>/i.test(html.slice(at))) {
++      at += /^<!doctype\s+html\s*>/i.exec(html.slice(at))[0].length; continue;
++    }
++    const start = at;
++    let end = at + 1, quote = null;
++    for (; end < html.length; end++) {
++      const ch = html[end];
++      if (quote) { if (ch === quote) quote = null; }
++      else if (ch === '"' || ch === "'") quote = ch;
++      else if (ch === '>') break;
++    }
++    if (end === html.length || quote) invalid();
++    const inside = html.slice(start + 1, end);
++    const match = /^(\/)?([a-z][a-z0-9-]*)([\s\S]*)$/i.exec(inside);
++    if (!match) invalid();
++    const [, closing, rawName, tail] = match, name = rawName.toLowerCase();
++    if (closing) {
++      if (tail.trim() || stack.at(-1)?.name !== name) invalid();
++      const token = stack.pop(); token.closeStart = start; token.end = end + 1;
++    } else {
++      const selfClosing = /\/\s*$/.test(tail);
++      if (selfClosing && !VOID.has(name)) invalid();
++      const token = { name, attrs: attributes(selfClosing ? tail.replace(/\/\s*$/, '') : tail), start, openEnd: end + 1, parent: stack.at(-1) ?? null, ancestors: stack.map(item => item.name) };
++      tokens.push(token);
++      if (!VOID.has(name)) stack.push(token);
++      else token.end = end + 1;
++    }
++    at = end + 1;
++  }
++  if (stack.length) invalid();
++  return tokens;
++}
++const METADATA = Object.freeze({
++  'index.html': {
++    lang: 'zh-Hant',
++    title: '多張圖片合成 PDF｜排序、轉向、不裁切',
++    description: '在本機將 JPEG/PNG 照片依序放入 A4 或 Letter PDF，每張一頁，可旋轉並保留完整圖片，不需上傳。',
++    h1: '把照片整理成一份順序正確的 PDF',
++  },
++  'en/index.html': {
++    lang: 'en',
++    title: 'Images to PDF | Order, Rotate, and Fit Photos to Pages',
++    description: 'Turn local JPEG or PNG images into one ordered A4 or Letter PDF, one uncropped image per page, processed in your browser.',
++    h1: 'Put your images into one ordered PDF',
++  },
++});
++export function validateReleaseHtml(html, file) {
++  const expected = METADATA[file];
++  if (!expected) invalid();
++  const tokens = parseStaticHtml(html);
++  function one(list) { if (list.length !== 1) invalid(); return list[0]; }
++  const root = one(tokens.filter(token => token.name === 'html'));
++  const head = one(tokens.filter(token => token.name === 'head'));
++  const body = one(tokens.filter(token => token.name === 'body'));
++  if (root.parent || root.attrs.lang !== expected.lang || head.parent !== root || body.parent !== root || head.end > body.start) invalid();
++  const title = one(tokens.filter(token => token.name === 'title'));
++  const h1 = one(tokens.filter(token => token.name === 'h1'));
++  const meta = name => tokens.filter(token => token.name === 'meta' && token.attrs.name?.toLowerCase() === name);
++  const description = one(meta('description')), robots = one(meta('robots'));
++  if (title.parent !== head || description.parent !== head || robots.parent !== head || !h1.ancestors.includes('body')) invalid();
++  if (html.slice(title.openEnd, title.closeStart) !== expected.title || html.slice(h1.openEnd, h1.closeStart) !== expected.h1 || description.attrs.content !== expected.description || robots.attrs.content !== 'index,follow') invalid();
++  const links = tokens.filter(token => token.name === 'link');
++  const canonical = one(links.filter(token => token.attrs.rel?.toLowerCase().split(/\s+/).includes('canonical')));
++  if (canonical.parent !== head || canonical.attrs.rel !== 'canonical' || canonical.attrs.href !== `https://image-pdf.glossquote.com/${file}` || Object.keys(canonical.attrs).sort().join() !== 'href,rel') invalid();
++  const alternate = links.filter(token => token.attrs.rel?.toLowerCase().split(/\s+/).includes('alternate'));
++  if (alternate.length !== 3) invalid();
++  const target = { 'zh-Hant': 'https://image-pdf.glossquote.com/index.html', en: 'https://image-pdf.glossquote.com/en/index.html', 'x-default': 'https://image-pdf.glossquote.com/index.html' };
++  for (const [language, url] of Object.entries(target)) {
++    const link = one(alternate.filter(token => token.attrs.hreflang === language));
++    if (link.parent !== head || link.attrs.rel !== 'alternate' || link.attrs.href !== url || Object.keys(link.attrs).sort().join() !== 'href,hreflang,rel') invalid();
++  }
++  return { lang: root.attrs.lang, title: expected.title, description: expected.description, h1: expected.h1, canonical: canonical.attrs.href, alternates: target };
++}
++export function renderReleaseHtml(source, file) {
++  const tokens = parseStaticHtml(source), head = tokens.filter(token => token.name === 'head');
++  if (head.length !== 1 || tokens.filter(token => token.name === 'meta' && token.attrs.name === 'robots').length !== 1) invalid();
++  const old = '<meta name="robots" content="noindex,nofollow">';
++  const content = source.slice(head[0].openEnd, head[0].closeStart);
++  if (content.split(old).length !== 2 || tokens.some(token => token.name === 'link' && ['canonical', 'alternate'].includes(token.attrs.rel))) invalid();
++  const newline = source.includes('\r\n') ? '\r\n' : '\n';
++  const links = [
++    `  <link rel="canonical" href="https://image-pdf.glossquote.com/${file}">`,
++    '  <link rel="alternate" hreflang="zh-Hant" href="https://image-pdf.glossquote.com/index.html">',
++    '  <link rel="alternate" hreflang="en" href="https://image-pdf.glossquote.com/en/index.html">',
++    '  <link rel="alternate" hreflang="x-default" href="https://image-pdf.glossquote.com/index.html">',
++  ].join(newline) + newline;
++  const output = source.slice(0, head[0].openEnd) + content.replace(old, '<meta name="robots" content="index,follow">') + links + source.slice(head[0].closeStart);
++  validateReleaseHtml(output, file);
++  return output;
++}
+diff --git a/scripts/release.mjs b/scripts/release.mjs
+new file mode 100644
+--- /dev/null
++++ b/scripts/release.mjs
+@@ -0,0 +1,155 @@
++import { readFile, writeFile, readdir, lstat, realpath, mkdir } from 'node:fs/promises';
++import path from 'node:path';
++import { fileURLToPath } from 'node:url';
++import { createHash } from 'node:crypto';
++import baseline from './release-baseline.json' with { type: 'json' };
++import { ROOT, PUBLIC_FILES, requireNode } from './files.mjs';
++import { CSP } from './serve.mjs'; // Import only: its CLI entry guard does not start a listener.
++import { renderReleaseHtml, validateReleaseHtml } from './release-html.mjs';
++
++export const RELEASE_ORIGIN = 'https://image-pdf.glossquote.com';
++export const TOOL_SLUG = 'images-to-pdf';
++const SITE_FILES = Object.freeze([...new Set([...PUBLIC_FILES, 'robots.txt', '_headers', 'sitemap.xml'])].sort());
++const OUTPUT_FILES = Object.freeze(['manifest.json', ...SITE_FILES.map(file => `site/${file}`)].sort());
++const hash = bytes => createHash('sha256').update(bytes).digest('hex');
++function reject(code) { throw new Error(code); }
++function sameKeys(value, keys) {
++  return value !== null && typeof value === 'object' && !Array.isArray(value) && Object.keys(value).sort().join('\0') === [...keys].sort().join('\0');
++}
++function safePath(relative) {
++  if (typeof relative !== 'string' || !/^[A-Za-z0-9_.-]+(?:\/[A-Za-z0-9_.-]+)*$/.test(relative) || relative.split('/').some(part => part === '.' || part === '..')) reject('RELEASE_PATH_INVALID');
++  return relative;
++}
++function local(root, relative) { return path.join(root, ...safePath(relative).split('/')); }
++async function inventory(directory, allowlist, { optional = false } = {}) {
++  let info;
++  try { info = await lstat(directory); }
++  catch (error) { if (error.code === 'ENOENT' && optional) return null; reject('RELEASE_INPUT_OR_OUTPUT_MISSING'); }
++  if (!info.isDirectory() || info.isSymbolicLink()) reject('RELEASE_LINK_OR_DIRECTORY_INVALID');
++  const canonical = await realpath(directory), files = [];
++  async function walk(current, relative) {
++    for (const name of (await readdir(current)).sort()) {
++      const rel = relative ? `${relative}/${name}` : name;
++      safePath(rel);
++      const target = path.join(current, name), stat = await lstat(target);
++      if (stat.isSymbolicLink()) reject('RELEASE_LINK_OR_DIRECTORY_INVALID');
++      const resolved = await realpath(target), suffix = path.relative(canonical, resolved);
++      if (suffix.startsWith('..') || path.isAbsolute(suffix)) reject('RELEASE_PATH_INVALID');
++      if (stat.isDirectory()) {
++        if (!allowlist.some(file => file.startsWith(rel + '/'))) reject('RELEASE_UNKNOWN_PATH');
++        await walk(target, rel);
++      } else if (stat.isFile() && allowlist.includes(rel)) files.push(rel);
++      else reject('RELEASE_UNKNOWN_PATH');
++    }
++  }
++  await walk(directory, '');
++  return files.sort();
++}
++function validateRecords(records) {
++  if (!Array.isArray(records)) reject('RELEASE_MANIFEST_INVALID');
++  let previous = '';
++  for (const record of records) {
++    if (!sameKeys(record, ['path', 'bytes', 'sha256'])) reject('RELEASE_MANIFEST_INVALID');
++    safePath(record.path);
++    if (record.path <= previous || !Number.isSafeInteger(record.bytes) || record.bytes < 0 || !/^[a-f0-9]{64}$/.test(record.sha256)) reject('RELEASE_MANIFEST_INVALID');
++    previous = record.path;
++  }
++}
++function validateManifest(bytes) {
++  if (bytes.length > 1_048_576) reject('RELEASE_MANIFEST_INVALID');
++  let data;
++  try { data = JSON.parse(bytes.toString('utf8')); } catch { reject('RELEASE_MANIFEST_INVALID'); }
++  if (!sameKeys(data, ['schemaVersion', 'mode', 'origin', 'toolSlug', 'files', 'sourceFiles']) || data.schemaVersion !== 1 || data.mode !== 'release-candidate' || data.origin !== RELEASE_ORIGIN || data.toolSlug !== TOOL_SLUG) reject('RELEASE_MANIFEST_INVALID');
++  validateRecords(data.files); validateRecords(data.sourceFiles);
++  return data;
++}
++async function sourceBytes(root) {
++  const info = await lstat(root);
++  if (!info.isDirectory() || info.isSymbolicLink()) reject('RELEASE_LINK_OR_DIRECTORY_INVALID');
++  const names = await inventory(path.join(root, 'public'), PUBLIC_FILES);
++  if (JSON.stringify(names) !== JSON.stringify([...PUBLIC_FILES].sort())) reject('RELEASE_SOURCE_CHANGED');
++  if (baseline.schemaVersion !== 1) reject('RELEASE_SOURCE_CHANGED');
++  validateRecords(baseline.publicFiles);
++  const source = new Map(), records = [];
++  for (const file of names) {
++    const bytes = await readFile(local(path.join(root, 'public'), file));
++    source.set(file, bytes); records.push({ path: file, bytes: bytes.length, sha256: hash(bytes) });
++  }
++  // This pin comes from frozen M1 bytes, not the mutable release manifest.
++  if (JSON.stringify(records) !== JSON.stringify(baseline.publicFiles)) reject('RELEASE_SOURCE_CHANGED');
++  if (baseline.securitySource.path !== 'scripts/serve.mjs') reject('RELEASE_SOURCE_CHANGED');
++  const scriptsInfo = await lstat(path.join(root, 'scripts'));
++  const serveInfo = await lstat(path.join(root, 'scripts', 'serve.mjs'));
++  if (!scriptsInfo.isDirectory() || scriptsInfo.isSymbolicLink() || !serveInfo.isFile() || serveInfo.isSymbolicLink()) reject('RELEASE_LINK_OR_DIRECTORY_INVALID');
++  const serve = await readFile(path.join(root, 'scripts', 'serve.mjs'));
++  if (serve.length !== baseline.securitySource.bytes || hash(serve) !== baseline.securitySource.sha256) reject('RELEASE_SOURCE_CHANGED');
++  return { source, records };
++}
++export async function prepareRelease(root = ROOT) {
++  requireNode();
++  const origin = new URL(RELEASE_ORIGIN);
++  if (origin.origin !== RELEASE_ORIGIN || origin.protocol !== 'https:' || origin.hostname !== 'image-pdf.glossquote.com' || origin.port || origin.username || origin.password || origin.pathname !== '/' || origin.search || origin.hash) reject('RELEASE_ORIGIN_INVALID');
++  const { source, records } = await sourceBytes(root);
++  const site = new Map();
++  for (const [file, bytes] of source) site.set(file, file.endsWith('.html') ? Buffer.from(renderReleaseHtml(bytes.toString('utf8'), file)) : bytes);
++  site.set('robots.txt', Buffer.from(`User-agent: *\nAllow: /\nSitemap: ${RELEASE_ORIGIN}/sitemap.xml\n`));
++  site.set('sitemap.xml', Buffer.from(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>${RELEASE_ORIGIN}/index.html</loc></url>\n  <url><loc>${RELEASE_ORIGIN}/en/index.html</loc></url>\n</urlset>\n`));
++  site.set('_headers', Buffer.from(`/*\n  Content-Security-Policy: ${CSP}\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: no-referrer\n  X-Robots-Tag: index, follow\n  Cache-Control: no-store\n`));
++  const files = SITE_FILES.map(file => ({ path: file, bytes: site.get(file).length, sha256: hash(site.get(file)) }));
++  const manifest = Buffer.from(JSON.stringify({ schemaVersion: 1, mode: 'release-candidate', origin: RELEASE_ORIGIN, toolSlug: TOOL_SLUG, files, sourceFiles: records }, null, 2) + '\n');
++  return { site, manifest, files, sourceFiles: records };
++}
++async function verifyExisting(root, expected, { optional = false } = {}) {
++  const directory = path.join(root, 'release-artifacts');
++  const files = await inventory(directory, OUTPUT_FILES, { optional });
++  if (files === null) return false;
++  if (JSON.stringify(files) !== JSON.stringify(OUTPUT_FILES)) reject('RELEASE_INPUT_OR_OUTPUT_MISSING');
++  const manifest = await readFile(path.join(directory, 'manifest.json'));
++  validateManifest(manifest);
++  // Rebuild expectations from pinned sources and semantic rules, never from this manifest.
++  for (const file of SITE_FILES) {
++    const bytes = await readFile(local(path.join(directory, 'site'), file));
++    if (file.endsWith('.html')) validateReleaseHtml(bytes.toString('utf8'), file);
++    if (!bytes.equals(expected.site.get(file))) reject('RELEASE_OUTPUT_CHANGED');
++  }
++  if (!manifest.equals(expected.manifest)) reject('RELEASE_MANIFEST_CHANGED');
++  return true;
++}
++export async function checkRelease(root = ROOT) {
++  const expected = await prepareRelease(root);
++  await verifyExisting(root, expected);
++  return { mode: 'release-candidate', origin: RELEASE_ORIGIN, toolSlug: TOOL_SLUG, files: expected.files.length, sourceFiles: expected.sourceFiles.length, manifestSha256: hash(expected.manifest) };
++}
++export async function buildRelease(root = ROOT) {
++  const expected = await prepareRelease(root);
++  if (await verifyExisting(root, expected, { optional: true })) return { ...await checkRelease(root), reused: true };
++  const directory = path.join(root, 'release-artifacts');
++  // All inputs and any existing outputs were checked before the first mutation.
++  // Exclusive creation preserves unknown/concurrently added files; no deletion/repair/overwrite path.
++  await mkdir(directory);
++  const dirs = new Set(['site']);
++  for (const file of SITE_FILES) {
++    let parent = path.posix.dirname(`site/${file}`);
++    while (parent !== '.') { dirs.add(parent); parent = path.posix.dirname(parent); }
++  }
++  for (const dir of [...dirs].sort((a, b) => a.split('/').length - b.split('/').length || (a < b ? -1 : 1))) await mkdir(local(directory, dir));
++  for (const file of SITE_FILES) await writeFile(local(path.join(directory, 'site'), file), expected.site.get(file), { flag: 'wx' });
++  // The sibling manifest is the last file written; a failed I/O leaves an incomplete candidate,
++  // which subsequent build/check refuse to overwrite. It never destroys pre-existing data.
++  await writeFile(path.join(directory, 'manifest.json'), expected.manifest, { flag: 'wx' });
++  return { ...await checkRelease(root), reused: false };
++}
++export function parseReleaseArgs(args) {
++  if (args.length !== 1 || !['build', 'check'].includes(args[0])) reject('RELEASE_ARGUMENTS_INVALID');
++  return args[0];
++}
++if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
++  try {
++    const mode = parseReleaseArgs(process.argv.slice(2));
++    const report = mode === 'build' ? await buildRelease() : await checkRelease();
++    console.log(`PASS ${mode}: ${report.files} release-candidate assets, ${report.sourceFiles} frozen M1 inputs, manifest ${report.manifestSha256}. Offline only; not deployed.`);
++  } catch (error) {
++    console.error(/^RELEASE_[A-Z_]+$/.test(error.message) ? error.message : 'RELEASE_FAILED');
++    process.exitCode = 1;
++  }
++}
+diff --git a/scripts/verify-release.mjs b/scripts/verify-release.mjs
+new file mode 100644
+--- /dev/null
++++ b/scripts/verify-release.mjs
+@@ -0,0 +1,28 @@
++import { spawnSync } from 'node:child_process';
++import { readFile, writeFile, mkdir } from 'node:fs/promises';
++import path from 'node:path';
++import { createHash } from 'node:crypto';
++import { ROOT, requireNode } from './files.mjs';
++
++requireNode();
++const evidence = path.join(ROOT, 'evidence', 'm1b');
++await mkdir(evidence, { recursive: true });
++const npmCli = path.join(path.dirname(process.execPath), 'node_modules', 'npm', 'bin', 'npm-cli.js');
++await readFile(npmCli);
++const commands = [['test', ['test']], ['check', ['run', 'check']], ['build-release', ['run', 'build:release']], ['check-release', ['run', 'check:release']]];
++const results = [];
++for (const [name, args] of commands) {
++  const result = spawnSync(process.execPath, [npmCli, ...args], { cwd: ROOT, shell: false, windowsHide: true, encoding: 'utf8', timeout: 60_000 });
++  const log = (result.stdout ?? '') + (result.stderr ?? '');
++  await writeFile(path.join(evidence, `final-${name}.log`), log);
++  const counts = {};
++  for (const key of ['tests', 'pass', 'fail', 'cancelled', 'skipped', 'todo']) {
++    const match = new RegExp(`(?:ℹ|#) ${key} (\\d+)`).exec(log);
++    if (match) counts[key] = Number(match[1]);
++  }
++  results.push({ command: `npm ${args.join(' ')}`, executable: process.execPath, args: [npmCli, ...args], exit: result.status, signal: result.signal, counts, logSha256: createHash('sha256').update(log).digest('hex') });
++  console.log(`${name}: exit ${result.status}${counts.tests ? `, ${counts.pass}/${counts.tests} pass` : ''}`);
++  if (result.status !== 0) break;
++}
++await writeFile(path.join(evidence, 'final-commands.json'), JSON.stringify({ node: process.version, shell: false, windowsHide: true, results, browser: 'NOT_RUN_USER_FOCUS_INCIDENT', publication: 'NOT_AUTHORIZED_BY_M1B' }, null, 2) + '\n');
++if (results.length !== commands.length || results.some(result => result.exit !== 0)) process.exitCode = 1;
+diff --git a/TASK-ENTRY.md b/TASK-ENTRY.md
+--- a/TASK-ENTRY.md
++++ b/TASK-ENTRY.md
+@@ -19,3 +19,9 @@
+ ## 最終觀察（完成命令後追加）
+ 
+ 雙語原生 UI、來源預檢、單張照片預覽／串行 PDF adapter、固定 template writer 已實作接線；最終 `npm test` 49/49，`npm run check` / `npm run build` exit 0，13 preview public/dist 檔。實際結構測試 PDF 1,180 bytes／2頁／8個 xref 物件全部對準，僅使用 opaque fake JPEG。環境完整前後 Snapshots 相同。測試檔／命令輸出與所有界線見 [HANDOFF](HANDOFF.md)。真瀏覽器能力仍 NOT_RUN_USER_FOCUS_INCIDENT，非完整產品驗收。
++
++## B20-RP-46 / M1B 進入（2026-10-23）
++
++已完整讀最新 `.runs/batch20-release-prep-2026-10-23/TASK.md`，它提供本輪新增範圍；M1 內容是歷史紀錄，不覆寫。只允許 package/.gitignore/scripts/test/HANDOFF/TASK-ENTRY/M1B-RELEASE/evidence/m1b/release-artifacts。不得修改 public/dist/原M1證據／規格／兄弟工具。requested `gpt-6.1-sol/max` 未切換、未委派，不以自述確認 backend。
++
++已記59個受保護檔案／46個原來源基線，13個public檔與M1 freeze相符。已新增 pinned M1 public/serve SHA、固定 https://image-pdf.glossquote.com、release renderer/full-document semantic checks/closed output ownership；targeted release tests 12/12 PASS。正式候選只改HTML head索引/SEO，加 robots/sitemap/安全_headers；runtime與可見候選文案保留。後續完整命令／guard／固定hash由 HANDOFF 的 M1B 段與新 evidence/m1b 記錄，不沿用M1測試冒充本輪browser。
+diff --git a/test/release.test.mjs b/test/release.test.mjs
+new file mode 100644
+--- /dev/null
++++ b/test/release.test.mjs
+@@ -0,0 +1,241 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import path from 'node:path';
++import { readFile, writeFile, mkdir, mkdtemp, readdir, rm, rename, symlink } from 'node:fs/promises';
++import { spawnSync } from 'node:child_process';
++import { createHash } from 'node:crypto';
++import { ROOT, PUBLIC_FILES } from '../scripts/files.mjs';
++import { buildRelease, checkRelease, parseReleaseArgs, RELEASE_ORIGIN, TOOL_SLUG } from '../scripts/release.mjs';
++import { parseStaticHtml, validateReleaseHtml } from '../scripts/release-html.mjs';
++
++const ORIGIN = 'https://image-pdf.glossquote.com';
++const assets = [...PUBLIC_FILES, '_headers', 'robots.txt', 'sitemap.xml'].sort();
++const sha = bytes => createHash('sha256').update(bytes).digest('hex');
++const expectedCsp = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'";
++async function fixture(run) {
++  const base = path.resolve(ROOT, 'test');
++  const root = await mkdtemp(path.join(base, '.release-'));
++  try {
++    for (const file of PUBLIC_FILES) {
++      const target = path.join(root, 'public', file);
++      await mkdir(path.dirname(target), { recursive: true });
++      await writeFile(target, await readFile(path.join(ROOT, 'public', file)));
++    }
++    await mkdir(path.join(root, 'scripts'));
++    for (const name of ['files.mjs', 'serve.mjs', 'release.mjs', 'release-html.mjs', 'release-baseline.json']) await writeFile(path.join(root, 'scripts', name), await readFile(path.join(ROOT, 'scripts', name)));
++    await run(root);
++  } finally {
++    assert.equal(path.dirname(path.resolve(root)), base);
++    assert.match(path.basename(root), /^\.release-[A-Za-z0-9]+$/);
++    await rm(root, { recursive: true }); // Only the verified unique task-owned fixture.
++  }
++}
++async function snapshot(root) {
++  const files = [];
++  async function walk(directory, relative = '') {
++    for (const item of (await readdir(directory, { withFileTypes: true })).sort((a, b) => a.name < b.name ? -1 : 1)) {
++      const rel = relative ? `${relative}/${item.name}` : item.name;
++      if (item.isDirectory()) await walk(path.join(directory, item.name), rel);
++      else { const bytes = await readFile(path.join(directory, item.name)); files.push({ path: rel, bytes: bytes.length, sha256: sha(bytes) }); }
++    }
++  }
++  await walk(root); return files;
++}
++function htmlHeadLinks(html) {
++  // Separate extraction oracle for exact generated links, not the generator's validator.
++  const head = html.slice(html.indexOf('<head>') + 6, html.indexOf('</head>'));
++  return [...head.matchAll(/<link\s+([^>]+)>/g)].map(([, attrs]) => Object.fromEntries([...attrs.matchAll(/([a-z-]+)="([^"]*)"/g)].map(([, key, value]) => [key, value])));
++}
++async function rewriteManifest(root, edit) {
++  const file = path.join(root, 'release-artifacts', 'manifest.json');
++  const manifest = JSON.parse(await readFile(file));
++  await edit(manifest);
++  await writeFile(file, JSON.stringify(manifest, null, 2) + '\n');
++}
++test('release bilingual SEO is reciprocal at fixed origin, head-only changes, candidate body preserved', async () => {
++  await fixture(async root => {
++    assert.equal(RELEASE_ORIGIN, ORIGIN); assert.equal(TOOL_SLUG, 'images-to-pdf');
++    const before = await snapshot(path.join(root, 'public'));
++    await buildRelease(root);
++    const report = await checkRelease(root); assert.equal(report.files, 16); assert.equal(report.sourceFiles, 13);
++    for (const file of ['index.html', 'en/index.html']) {
++      const source = await readFile(path.join(root, 'public', file), 'utf8');
++      const html = await readFile(path.join(root, 'release-artifacts', 'site', file), 'utf8');
++      const links = htmlHeadLinks(html);
++      assert.deepEqual(links.filter(link => link.rel === 'canonical'), [{ rel: 'canonical', href: `${ORIGIN}/${file}` }]);
++      assert.deepEqual(links.filter(link => link.rel === 'alternate'), [
++        { rel: 'alternate', hreflang: 'zh-Hant', href: `${ORIGIN}/index.html` },
++        { rel: 'alternate', hreflang: 'en', href: `${ORIGIN}/en/index.html` },
++        { rel: 'alternate', hreflang: 'x-default', href: `${ORIGIN}/index.html` },
++      ]);
++      const seoRemoved = html.replace(/  <link rel="(?:canonical|alternate)"[^>]*>\r?\n/g, '').replace('<meta name="robots" content="index,follow">', '<meta name="robots" content="noindex,nofollow">');
++      assert.equal(seoRemoved, source);
++      assert.equal(html.slice(html.indexOf('</head>')), source.slice(source.indexOf('</head>')));
++      assert.ok(source.includes('noindex,nofollow') && !source.includes('rel="canonical"'));
++      assert.ok(html.includes(file === 'index.html' ? '本地候選版，尚未公開發布。' : 'Local candidate; not publicly released.'));
++    }
++    assert.deepEqual(await snapshot(path.join(root, 'public')), before);
++  });
++});
++test('release closed assets and exact security headers/robots/sitemap; runtime bytes identical', async () => {
++  await fixture(async root => {
++    await buildRelease(root);
++    const site = path.join(root, 'release-artifacts', 'site');
++    assert.deepEqual((await snapshot(site)).map(file => file.path).sort(), assets);
++    for (const file of PUBLIC_FILES.filter(file => !file.endsWith('.html'))) assert.deepEqual(await readFile(path.join(site, file)), await readFile(path.join(root, 'public', file)));
++    assert.equal(await readFile(path.join(site, 'robots.txt'), 'utf8'), 'User-agent: *\nAllow: /\nSitemap: https://image-pdf.glossquote.com/sitemap.xml\n');
++    assert.equal(await readFile(path.join(site, '_headers'), 'utf8'), `/*\n  Content-Security-Policy: ${expectedCsp}\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: no-referrer\n  X-Robots-Tag: index, follow\n  Cache-Control: no-store\n`);
++    const sitemap = await readFile(path.join(site, 'sitemap.xml'), 'utf8');
++    assert.deepEqual([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1]), [`${ORIGIN}/index.html`, `${ORIGIN}/en/index.html`]);
++    assert.ok(!sitemap.includes('lastmod'));
++  });
++});
++test('release manifest fixed schema, sorted complete source/site hashes; deterministic rebuild and independent roots', async () => {
++  await fixture(async first => {
++    const report = await buildRelease(first); assert.equal(report.reused, false);
++    const before = await snapshot(path.join(first, 'release-artifacts'));
++    assert.equal((await buildRelease(first)).reused, true);
++    assert.deepEqual(await snapshot(path.join(first, 'release-artifacts')), before);
++    const manifest = JSON.parse(await readFile(path.join(first, 'release-artifacts', 'manifest.json')));
++    assert.deepEqual(Object.keys(manifest), ['schemaVersion', 'mode', 'origin', 'toolSlug', 'files', 'sourceFiles']);
++    assert.equal(manifest.schemaVersion, 1); assert.equal(manifest.mode, 'release-candidate'); assert.equal(manifest.origin, ORIGIN); assert.equal(manifest.toolSlug, 'images-to-pdf');
++    assert.deepEqual(manifest.files.map(file => file.path), assets);
++    assert.deepEqual(manifest.sourceFiles.map(file => file.path), [...PUBLIC_FILES].sort());
++    for (const [folder, records] of [['release-artifacts/site', manifest.files], ['public', manifest.sourceFiles]]) {
++      for (const record of records) {
++        const bytes = await readFile(path.join(first, folder, record.path));
++        assert.deepEqual(Object.keys(record), ['path', 'bytes', 'sha256']);
++        assert.equal(record.bytes, bytes.length); assert.equal(record.sha256, sha(bytes));
++      }
++    }
++    assert.ok(!JSON.stringify(manifest).includes(first));
++    await fixture(async second => { await buildRelease(second); assert.deepEqual(await snapshot(path.join(second, 'release-artifacts')), before); });
++  });
++});
++test('release rejects modified asset and leaves every existing output byte unchanged', async () => {
++  await fixture(async root => {
++    await buildRelease(root);
++    const asset = path.join(root, 'release-artifacts', 'site', 'js', 'app.js');
++    await writeFile(asset, Buffer.concat([await readFile(asset), Buffer.from('\n// tamper\n')]));
++    const damaged = await snapshot(path.join(root, 'release-artifacts'));
++    await assert.rejects(checkRelease(root), /RELEASE_OUTPUT_CHANGED/);
++    await assert.rejects(buildRelease(root), /RELEASE_OUTPUT_CHANGED/);
++    assert.deepEqual(await snapshot(path.join(root, 'release-artifacts')), damaged);
++  });
++});
++test('asset + manifest coordinated tamper cannot redefine expected bytes', async () => {
++  await fixture(async root => {
++    await buildRelease(root);
++    const asset = path.join(root, 'release-artifacts', 'site', 'styles', 'app.css');
++    const changed = Buffer.concat([await readFile(asset), Buffer.from('\nbody{color:red}\n')]); await writeFile(asset, changed);
++    await rewriteManifest(root, manifest => { const row = manifest.files.find(file => file.path === 'styles/app.css'); row.bytes = changed.length; row.sha256 = sha(changed); });
++    const damaged = await snapshot(path.join(root, 'release-artifacts'));
++    await assert.rejects(checkRelease(root), /RELEASE_OUTPUT_CHANGED/);
++    await assert.rejects(buildRelease(root), /RELEASE_OUTPUT_CHANGED/);
++    assert.deepEqual(await snapshot(path.join(root, 'release-artifacts')), damaged);
++  });
++});
++test('release rejects missing/extra/unknown directories/unmanaged output, preserving all fixture files', async () => {
++  for (const mutation of ['missing', 'extra', 'directory', 'unmanaged']) await fixture(async root => {
++    await buildRelease(root);
++    const out = path.join(root, 'release-artifacts');
++    if (mutation === 'missing') await rename(path.join(out, 'site', 'robots.txt'), path.join(root, 'held-robots.txt'));
++    if (mutation === 'extra') await writeFile(path.join(out, 'site', 'unmanaged.txt'), 'preserve');
++    if (mutation === 'directory') await mkdir(path.join(out, 'site', 'unknown'));
++    if (mutation === 'unmanaged') await rename(path.join(out, 'manifest.json'), path.join(root, 'held-manifest.json'));
++    const damaged = await snapshot(out);
++    await assert.rejects(checkRelease(root), /RELEASE_/); await assert.rejects(buildRelease(root), /RELEASE_/);
++    assert.deepEqual(await snapshot(out), damaged);
++  });
++});
++test('manifest wrong origin/schema/mode/slug, unsafe/duplicate paths and extra fields are rejected', async () => {
++  const edits = [m => { m.origin = 'https://evil.invalid'; }, m => { m.schemaVersion = 2; }, m => { m.mode = 'production'; }, m => { m.toolSlug = 'other'; }, m => { m.files[0].path = '../escape'; }, m => { m.files.push(m.files[0]); }, m => { m.trusted = true; }];
++  for (const edit of edits) await fixture(async root => {
++    await buildRelease(root); await rewriteManifest(root, edit);
++    await assert.rejects(checkRelease(root), /RELEASE_(?:MANIFEST|PATH)_INVALID/);
++  });
++});
++test('source bytes/security constants drift rejected, even if manifest/source and site all match tampering', async () => {
++  await fixture(async root => {
++    await buildRelease(root);
++    const input = path.join(root, 'public', 'js', 'app.js'), output = path.join(root, 'release-artifacts', 'site', 'js', 'app.js');
++    const bytes = Buffer.concat([await readFile(input), Buffer.from('\n// changed source\n')]);
++    await writeFile(input, bytes); await writeFile(output, bytes);
++    await rewriteManifest(root, m => { for (const list of [m.files, m.sourceFiles]) { const row = list.find(row => row.path === 'js/app.js'); row.bytes = bytes.length; row.sha256 = sha(bytes); } });
++    await assert.rejects(checkRelease(root), /RELEASE_SOURCE_CHANGED/); await assert.rejects(buildRelease(root), /RELEASE_SOURCE_CHANGED/);
++  });
++  await fixture(async root => {
++    const serve = path.join(root, 'scripts', 'serve.mjs'); await writeFile(serve, (await readFile(serve, 'utf8')).replace("connect-src 'none'", "connect-src *"));
++    await assert.rejects(buildRelease(root), /RELEASE_SOURCE_CHANGED/);
++    await assert.rejects(readFile(path.join(root, 'release-artifacts', 'manifest.json')), { code: 'ENOENT' });
++  });
++});
++test('source unknown/missing assets rejected before writing output', async () => {
++  for (const change of ['extra', 'missing']) await fixture(async root => {
++    if (change === 'extra') await writeFile(path.join(root, 'public', 'unknown.txt'), 'preserve');
++    else await rename(path.join(root, 'public', 'index.html'), path.join(root, 'held-index.html'));
++    await assert.rejects(buildRelease(root), /RELEASE_/);
++    await assert.rejects(readFile(path.join(root, 'release-artifacts', 'manifest.json')), { code: 'ENOENT' });
++  });
++});
++test('junctions in input, output and output ancestor are rejected without modifying links/targets', async () => {
++  for (const location of ['source', 'site', 'ancestor']) await fixture(async root => {
++    if (location === 'source') {
++      await rename(path.join(root, 'public', 'js'), path.join(root, 'held-js'));
++      await symlink(path.join(root, 'held-js'), path.join(root, 'public', 'js'), 'junction');
++    } else {
++      await buildRelease(root);
++      if (location === 'site') {
++        await rename(path.join(root, 'release-artifacts', 'site', 'js'), path.join(root, 'held-js'));
++        await symlink(path.join(root, 'held-js'), path.join(root, 'release-artifacts', 'site', 'js'), 'junction');
++      } else {
++        await rename(path.join(root, 'release-artifacts'), path.join(root, 'held-output'));
++        await symlink(path.join(root, 'held-output'), path.join(root, 'release-artifacts'), 'junction');
++      }
++    }
++    await assert.rejects(buildRelease(root), /RELEASE_LINK_OR_DIRECTORY_INVALID/);
++    await assert.rejects(checkRelease(root), /RELEASE_LINK_OR_DIRECTORY_INVALID/);
++  });
++});
++test('semantic counterexamples: misplaced/commented/duplicate/wrong language SEO and wrong URLs fail', async () => {
++  await fixture(async root => {
++    await buildRelease(root);
++    for (const file of ['index.html', 'en/index.html']) {
++      const html = await readFile(path.join(root, 'release-artifacts', 'site', file), 'utf8');
++      assert.equal(validateReleaseHtml(html, file).canonical, `${ORIGIN}/${file}`);
++      const canonical = `<link rel="canonical" href="${ORIGIN}/${file}">`;
++      const variants = [
++        html.replace(canonical, `<!-- ${canonical} -->`),
++        html.replace(canonical, '') .replace('</body>', `${canonical}</body>`),
++        html.replace('</head>', `${canonical}</head>`),
++        html.replace('hreflang="en"', 'hreflang="fr"'),
++        html.replace('hreflang="x-default"', 'hreflang="zh-Hant"'),
++        html.replace(`href="${ORIGIN}/${file}"`, `href="${ORIGIN}/${file}?private=x"`),
++        html.replace(`href="${ORIGIN}/${file}"`, `href="https://image-pdf.glossquote.com:8443/${file}"`),
++        html.replace(`href="${ORIGIN}/${file}"`, `href="https://evil.invalid/${file}"`),
++        html.replace('<h1>', '<h1 hidden>WRONG </h1><h1>'),
++        html.replace('name="robots" content="index,follow"', 'name="robots" content="noindex,nofollow"'),
++        html.replace('<title>', '<title>WRONG '),
++        html.replace('name="description" content="', 'name="description" content="WRONG '),
++      ];
++      for (const variant of variants) assert.throws(() => validateReleaseHtml(variant, file), /RELEASE_HTML_INVALID/);
++    }
++    const parsed = parseStaticHtml('<!doctype html><html><head><!-- <link rel="canonical" href="fake"> --><script>"<link rel=canonical>"</script></head><body><input multiple disabled><h1>Real</h1></body></html>');
++    assert.equal(parsed.filter(token => token.name === 'link').length, 0);
++    assert.equal(parsed.find(token => token.name === 'input').attrs.multiple, '');
++  });
++});
++test('CLI build/check succeed on task-owned copy; no args/wrong mode/extra args reject without mutation', async () => {
++  await fixture(async root => {
++    const cli = args => spawnSync(process.execPath, [path.join(root, 'scripts', 'release.mjs'), ...args], { cwd: root, shell: false, windowsHide: true, encoding: 'utf8', timeout: 10_000 });
++    for (const args of [[], ['deploy'], ['build', 'extra'], ['check', '--origin', 'https://evil.invalid'], ['--help']]) {
++      assert.throws(() => parseReleaseArgs(args), /RELEASE_ARGUMENTS_INVALID/);
++      const result = cli(args); assert.equal(result.status, 1); assert.match(result.stderr, /RELEASE_ARGUMENTS_INVALID/);
++    }
++    await assert.rejects(readFile(path.join(root, 'release-artifacts', 'manifest.json')), { code: 'ENOENT' });
++    assert.equal(cli(['build']).status, 0); assert.equal(cli(['check']).status, 0);
++    const before = await snapshot(path.join(root, 'release-artifacts'));
++    assert.equal(cli(['build', '--origin=https://evil.invalid']).status, 1);
++    assert.deepEqual(await snapshot(path.join(root, 'release-artifacts')), before);
++  });
++});

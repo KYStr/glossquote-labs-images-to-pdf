@@ -1,0 +1,336 @@
+{
+  "task": "B20-46-M2A",
+  "authority": "Primary B20-46-M2A dispatch: isolated Chromium145 acceptance + actual screenshots reviewed; no browser executed by this owner in M2A.",
+  "run": ".runs/batch20-browser-release-2026-10-25/isolated/b20-46-r3",
+  "browserVersion": "145.0.7632.6",
+  "counts": {
+    "PASS": 32,
+    "NOT_RUN": 10,
+    "FAIL": 0
+  },
+  "failures": [],
+  "prohibited": [],
+  "cases": [
+    {
+      "id": "46-bootstrap",
+      "language": "zh-Hant",
+      "status": "PASS"
+    },
+    {
+      "id": "46-a4-order-rotation-native-jpeg",
+      "language": "zh-Hant",
+      "status": "PASS"
+    },
+    {
+      "id": "46-native-pdf-viewer-a4",
+      "language": "zh-Hant",
+      "status": "NOT_RUN",
+      "reason": "ROOT_BLOB_VIEWER_NAVIGATION_NOT_AUTHORIZED"
+    },
+    {
+      "id": "46-stale-settings-rebuild",
+      "language": "zh-Hant",
+      "status": "PASS"
+    },
+    {
+      "id": "46-input-errors-and-recovery",
+      "language": "zh-Hant",
+      "status": "PASS"
+    },
+    {
+      "id": "46-native-fixture-decode-control",
+      "language": "zh-Hant",
+      "status": "PASS"
+    },
+    {
+      "id": "46-exif-1-to-8-native-pixels",
+      "language": "zh-Hant",
+      "status": "PASS"
+    },
+    {
+      "id": "46-letter-landscape-fixed-oracle",
+      "language": "zh-Hant",
+      "status": "PASS"
+    },
+    {
+      "id": "46-native-pdf-viewer-letter",
+      "language": "zh-Hant",
+      "status": "NOT_RUN",
+      "reason": "ROOT_BLOB_VIEWER_NAVIGATION_NOT_AUTHORIZED"
+    },
+    {
+      "id": "46-two-sources-two-pages",
+      "language": "zh-Hant",
+      "status": "PASS"
+    },
+    {
+      "id": "46-hostile-filename-text-only",
+      "language": "zh-Hant",
+      "status": "PASS"
+    },
+    {
+      "id": "46-keyboard-desktop",
+      "language": "zh-Hant",
+      "status": "PASS"
+    },
+    {
+      "id": "46-keyboard-320-reflow",
+      "language": "zh-Hant",
+      "status": "PASS"
+    },
+    {
+      "id": "46-cancel-pending-decoding",
+      "language": "zh-Hant",
+      "status": "PASS"
+    },
+    {
+      "id": "46-cancel-pending-encoding",
+      "language": "zh-Hant",
+      "status": "PASS"
+    },
+    {
+      "id": "46-stale-pending-encode-queue-barrier",
+      "language": "zh-Hant",
+      "status": "PASS"
+    },
+    {
+      "id": "46-reduced-motion",
+      "language": "zh-Hant",
+      "status": "PASS"
+    },
+    {
+      "id": "46-200-percent-text-zoom",
+      "language": "zh-Hant",
+      "status": "NOT_RUN",
+      "reason": "ROOT_REAL_TEXT_ZOOM_CAPABILITY_REQUIRED"
+    },
+    {
+      "id": "46-native-viewer-visible-content",
+      "language": "zh-Hant",
+      "status": "NOT_RUN",
+      "reason": "ROOT_VISUAL_REVIEW_OF_NATIVE_PDF_PAGES_REQUIRED"
+    },
+    {
+      "id": "46-native-os-dialogs-device-at",
+      "language": "zh-Hant",
+      "status": "NOT_RUN",
+      "reason": "MANUAL_NATIVE_DEVICE_AT_BOUNDARY"
+    },
+    {
+      "id": "46-network-storage-errors-reset",
+      "language": "zh-Hant",
+      "status": "PASS"
+    },
+    {
+      "id": "46-bootstrap",
+      "language": "en",
+      "status": "PASS"
+    },
+    {
+      "id": "46-a4-order-rotation-native-jpeg",
+      "language": "en",
+      "status": "PASS"
+    },
+    {
+      "id": "46-native-pdf-viewer-a4",
+      "language": "en",
+      "status": "NOT_RUN",
+      "reason": "ROOT_BLOB_VIEWER_NAVIGATION_NOT_AUTHORIZED"
+    },
+    {
+      "id": "46-stale-settings-rebuild",
+      "language": "en",
+      "status": "PASS"
+    },
+    {
+      "id": "46-input-errors-and-recovery",
+      "language": "en",
+      "status": "PASS"
+    },
+    {
+      "id": "46-native-fixture-decode-control",
+      "language": "en",
+      "status": "PASS"
+    },
+    {
+      "id": "46-exif-1-to-8-native-pixels",
+      "language": "en",
+      "status": "PASS"
+    },
+    {
+      "id": "46-letter-landscape-fixed-oracle",
+      "language": "en",
+      "status": "PASS"
+    },
+    {
+      "id": "46-native-pdf-viewer-letter",
+      "language": "en",
+      "status": "NOT_RUN",
+      "reason": "ROOT_BLOB_VIEWER_NAVIGATION_NOT_AUTHORIZED"
+    },
+    {
+      "id": "46-two-sources-two-pages",
+      "language": "en",
+      "status": "PASS"
+    },
+    {
+      "id": "46-hostile-filename-text-only",
+      "language": "en",
+      "status": "PASS"
+    },
+    {
+      "id": "46-keyboard-desktop",
+      "language": "en",
+      "status": "PASS"
+    },
+    {
+      "id": "46-keyboard-320-reflow",
+      "language": "en",
+      "status": "PASS"
+    },
+    {
+      "id": "46-cancel-pending-decoding",
+      "language": "en",
+      "status": "PASS"
+    },
+    {
+      "id": "46-cancel-pending-encoding",
+      "language": "en",
+      "status": "PASS"
+    },
+    {
+      "id": "46-stale-pending-encode-queue-barrier",
+      "language": "en",
+      "status": "PASS"
+    },
+    {
+      "id": "46-reduced-motion",
+      "language": "en",
+      "status": "PASS"
+    },
+    {
+      "id": "46-200-percent-text-zoom",
+      "language": "en",
+      "status": "NOT_RUN",
+      "reason": "ROOT_REAL_TEXT_ZOOM_CAPABILITY_REQUIRED"
+    },
+    {
+      "id": "46-native-viewer-visible-content",
+      "language": "en",
+      "status": "NOT_RUN",
+      "reason": "ROOT_VISUAL_REVIEW_OF_NATIVE_PDF_PAGES_REQUIRED"
+    },
+    {
+      "id": "46-native-os-dialogs-device-at",
+      "language": "en",
+      "status": "NOT_RUN",
+      "reason": "MANUAL_NATIVE_DEVICE_AT_BOUNDARY"
+    },
+    {
+      "id": "46-network-storage-errors-reset",
+      "language": "en",
+      "status": "PASS"
+    }
+  ],
+  "downloadedPdfExamples": [
+    {
+      "id": "46-a4-order-rotation-native-jpeg",
+      "language": "zh-Hant",
+      "status": "PASS",
+      "bytes": 16427,
+      "sha256": "0946d0149b9442af3fdced68665749fe4493d520f07876a2081606c144ef2219",
+      "pageCount": 3,
+      "pixelResultCount": 3
+    },
+    {
+      "id": "46-exif-1-to-8-native-pixels",
+      "language": "zh-Hant",
+      "status": "PASS",
+      "bytes": 10733,
+      "sha256": "a5b46dcfd4c7065fa5d4e318c986d2d01f9ca7c9f3a8a8abcd98b5728c10c1f3",
+      "pageCount": 8,
+      "pixelResultCount": 8
+    },
+    {
+      "id": "46-letter-landscape-fixed-oracle",
+      "language": "zh-Hant",
+      "status": "PASS",
+      "bytes": 2961,
+      "sha256": "f872f72750ea9f89c41dee37eb7f58c57f18d245835f2f95941f81217149e34d",
+      "pageCount": 1,
+      "pixelResultCount": null
+    },
+    {
+      "id": "46-a4-order-rotation-native-jpeg",
+      "language": "en",
+      "status": "PASS",
+      "bytes": 16427,
+      "sha256": "0946d0149b9442af3fdced68665749fe4493d520f07876a2081606c144ef2219",
+      "pageCount": 3,
+      "pixelResultCount": 3
+    },
+    {
+      "id": "46-exif-1-to-8-native-pixels",
+      "language": "en",
+      "status": "PASS",
+      "bytes": 10733,
+      "sha256": "a5b46dcfd4c7065fa5d4e318c986d2d01f9ca7c9f3a8a8abcd98b5728c10c1f3",
+      "pageCount": 8,
+      "pixelResultCount": 8
+    },
+    {
+      "id": "46-letter-landscape-fixed-oracle",
+      "language": "en",
+      "status": "PASS",
+      "bytes": 2961,
+      "sha256": "f872f72750ea9f89c41dee37eb7f58c57f18d245835f2f95941f81217149e34d",
+      "pageCount": 1,
+      "pixelResultCount": null
+    }
+  ],
+  "cleanup": {
+    "status": "PASS",
+    "scope": "Only exact recorded task process generations queried; no broad scan or process termination",
+    "jobHandleClosedByReviewedLauncher": true,
+    "runnerPidAbsent": true,
+    "launcherExit": 0,
+    "recordedGenerations": [
+      {
+        "recordedPid": 51000,
+        "recordedStart": "2026-10-27T14:25:56.2029835+08:00",
+        "sameGenerationStillPresent": false,
+        "action": "READ_ONLY_NO_TERMINATION"
+      },
+      {
+        "recordedPid": 103980,
+        "recordedStart": "2026-10-27T14:27:39.6619498+08:00",
+        "sameGenerationStillPresent": false,
+        "action": "READ_ONLY_NO_TERMINATION"
+      }
+    ]
+  },
+  "cleanupNote": "cleanup-job captured two pending conhost generations; the subsequent primary parent-cleanup receipt verifies both absent. Nothing terminated by M2A.",
+  "receipts": [
+    {
+      "path": ".runs/batch20-browser-release-2026-10-25/isolated/b20-46-r3/result.json",
+      "bytes": 315839,
+      "sha256": "52c4cceb8558d32a2d1e762e2422de92cf8039d4136d995d31c565d47e1755d7"
+    },
+    {
+      "path": ".runs/batch20-browser-release-2026-10-25/isolated/b20-46-r3/cases/results.json",
+      "bytes": 318681,
+      "sha256": "d4c3133493abc56e3a17bdf7b03b2f28d1680f120f2f900384d39d182e68bf1b"
+    },
+    {
+      "path": ".runs/batch20-browser-release-2026-10-25/isolated/b20-46-r3/cleanup-job.json",
+      "bytes": 619,
+      "sha256": "bf05f421bb59d765af8a16e389017834a1061b417e8972cddda67aeb7c6cd165"
+    },
+    {
+      "path": ".runs/batch20-browser-release-2026-10-25/isolated/b20-46-r3/parent-cleanup.json",
+      "bytes": 648,
+      "sha256": "18913b92950bfb2fd58dcc4aa92bfa5bcc52cd90bc218fd2962af145cf3f0096"
+    }
+  ],
+  "boundary": "Old browser acceptance applies to frozen product/runtime. New release footer/config/redirects have offline M2A proof only; live routing/headers and remaining browser NOT_RUN are not promoted to PASS."
+}

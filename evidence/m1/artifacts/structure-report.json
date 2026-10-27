@@ -1,0 +1,43 @@
+{
+  "scope": "ACTUAL_PDF_BYTES_WITH_OPAQUE_FAKE_JPEG_STREAMS_ONLY",
+  "filename": "writer-structure-only.pdf",
+  "bytes": 1180,
+  "sha256": "5e78e42aca457959ac730ba638661dba9049ad9b92a13edb055404cce20f7355",
+  "pageCount": 2,
+  "offsets": [
+    {
+      "id": 1,
+      "offset": 19
+    },
+    {
+      "id": 2,
+      "offset": 68
+    },
+    {
+      "id": 3,
+      "offset": 131
+    },
+    {
+      "id": 4,
+      "offset": 267
+    },
+    {
+      "id": 5,
+      "offset": 439
+    },
+    {
+      "id": 6,
+      "offset": 534
+    },
+    {
+      "id": 7,
+      "offset": 670
+    },
+    {
+      "id": 8,
+      "offset": 842
+    }
+  ],
+  "startxref": 937,
+  "browserCanvasJpegDecodePdfViewer": "NOT_RUN_USER_FOCUS_INCIDENT"
+}

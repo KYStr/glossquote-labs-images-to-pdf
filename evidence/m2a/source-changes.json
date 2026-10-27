@@ -1,0 +1,95 @@
+{
+  "protectedFilesUnchanged": true,
+  "changes": [
+    {
+      "path": "HANDOFF.md",
+      "kind": "modified",
+      "before": {
+        "path": "HANDOFF.md",
+        "bytes": 14685,
+        "sha256": "490652c43e83a9533f14cc4471c0582816c8dabb9d9f05fc02b4c312438d7587"
+      },
+      "after": {
+        "path": "HANDOFF.md",
+        "bytes": 20275,
+        "sha256": "2857bbe2b202b38b270403c250cb000cd9548803b79d19800d9fa1cc938da374"
+      }
+    },
+    {
+      "path": "scripts/check.mjs",
+      "kind": "modified",
+      "before": {
+        "path": "scripts/check.mjs",
+        "bytes": 3557,
+        "sha256": "f9626f4c5907d2df45b12f37794dc13029f64c1fd5c1d863364ca843870c52ef"
+      },
+      "after": {
+        "path": "scripts/check.mjs",
+        "bytes": 3674,
+        "sha256": "7e6001047ae8628699828d0bd879dad83f6998d8d69b994aecf37a3be08ab0c4"
+      }
+    },
+    {
+      "path": "scripts/release-html.mjs",
+      "kind": "modified",
+      "before": {
+        "path": "scripts/release-html.mjs",
+        "bytes": 7907,
+        "sha256": "dc2919e56b0d3760578e467d63686b03c52de8c750ec6715acb95eba5e776afe"
+      },
+      "after": {
+        "path": "scripts/release-html.mjs",
+        "bytes": 9042,
+        "sha256": "f23a4ee28647cda71c66adcca5c13f62d659277fd3ae0ea86313ac553451525d"
+      }
+    },
+    {
+      "path": "scripts/release.mjs",
+      "kind": "modified",
+      "before": {
+        "path": "scripts/release.mjs",
+        "bytes": 10179,
+        "sha256": "264320d953ce9d47c36a675ae731a84536e945c2ffbb686d4c808dd5a923d06a"
+      },
+      "after": {
+        "path": "scripts/release.mjs",
+        "bytes": 10394,
+        "sha256": "8b31183a7851690095800aa6784ef4014b802516caf4534e248f1c53acbbcde5"
+      }
+    },
+    {
+      "path": "scripts/worker-config.mjs",
+      "kind": "added",
+      "before": null,
+      "after": {
+        "path": "scripts/worker-config.mjs",
+        "bytes": 1511,
+        "sha256": "c9734bdaadec23e47e8007086577658190067ac8dd66a204602bd6f3b8474464"
+      }
+    },
+    {
+      "path": "test/release.test.mjs",
+      "kind": "modified",
+      "before": {
+        "path": "test/release.test.mjs",
+        "bytes": 16682,
+        "sha256": "0e6e66216ec8127c451d72131c03ea3f5b4c821d1f65a8a91517288d07f1575a"
+      },
+      "after": {
+        "path": "test/release.test.mjs",
+        "bytes": 23951,
+        "sha256": "85f250c5b1229c03c660c4ab73ea9ad3e35bbdf265f55c020f4075d852a4d1c0"
+      }
+    },
+    {
+      "path": "wrangler.jsonc",
+      "kind": "added",
+      "before": null,
+      "after": {
+        "path": "wrangler.jsonc",
+        "bytes": 601,
+        "sha256": "8478b4852b1cd66cd3c59808374f942bb0e2edd31b7b4b4af6851ca63dac6f92"
+      }
+    }
+  ]
+}

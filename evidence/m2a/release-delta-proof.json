@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "html": [
+    {
+      "file": "index.html",
+      "exactAllowlistedFooterOnly": true,
+      "seoAndEveryOtherByteUnchanged": true
+    },
+    {
+      "file": "en/index.html",
+      "exactAllowlistedFooterOnly": true,
+      "seoAndEveryOtherByteUnchanged": true
+    }
+  ],
+  "unchangedOtherOldSiteFiles": 14,
+  "configTemplate": {
+    "path": "tool-projects/42-table-reconcile/wrangler.jsonc",
+    "bytes": 603,
+    "sha256": "91c71a88d3b27fe573fe15f5750581fb4baac6acaedf0bac06bc51b73550fffa",
+    "exactExceptNameAndDomain": true
+  },
+  "redirects": {
+    "bytes": 65,
+    "sha256": "9e47a2579b08f461b1124de1e42a1bde7a79ca29d77401104f6f432d8be90e1e",
+    "lines": 3,
+    "finalLF": true,
+    "CRBytes": 0
+  },
+  "oldReleaseManifestSha256": "b89031e973e6b0ba6aa54b2bfe2f8852e19217c669816598a82f7d645d16184a",
+  "newReleaseManifestSha256": "b5b5b9f08c7821c39554098ca95a59945a5840030d54768124f52739b8027f59"
+}

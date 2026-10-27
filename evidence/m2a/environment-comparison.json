@@ -1,0 +1,7 @@
+{
+  "Status": "PASS",
+  "FullSnapshotsIdentical": true,
+  "Scope": "HKCU/HKLM PATH hash/type/length/ephemeral; full Environment-key fingerprint; TEMP/TMP fingerprints",
+  "Before": "environment-before.json",
+  "After": "environment-after.json"
+}

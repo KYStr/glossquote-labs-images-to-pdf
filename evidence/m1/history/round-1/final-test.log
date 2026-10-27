@@ -1,0 +1,59 @@
+
+> glossquote-labs-images-to-pdf@0.1.0-m1 test
+> node --test test/*.test.mjs
+
+✔ offline UI wiring zh-Hant: choose/order/rotate/preview/build/download/stale/reset (21.4395ms)
+✔ offline UI wiring en: choose/order/rotate/preview/build/download/stale/reset (2.4348ms)
+✔ offline UI wiring: malicious filename is text, failed second source clears old result, remove/retry (3.1957ms)
+✔ offline UI wiring: setting change while encode pending, then retry stays serialized (1.5851ms)
+✔ offline UI wiring: cancel pending encode and pagehide never revive old output (1.2989ms)
+✔ offline UI wiring: missing native capabilities clearly block controls; translations match codes (1.0612ms)
+✔ A18 three sources: maximum one bitmap; close/reset before next; no source metadata (2.7797ms)
+✔ A19 cancel pending decode: wait, close, no next bitmap or PDF (3.1456ms)
+✔ A19 cancel second pending encode: previously encoded page also cannot return (0.6981ms)
+✔ A20 settings generation change while toBlob is pending: no downloadable URL (0.6054ms)
+✔ decode failure/mismatch, unavailable Canvas, null/wrong MIME/bad JPEG all fail with cleanup (0.8013ms)
+✔ invalid batch never reaches decode even if fabricated metadata was supplied (0.2092ms)
+✔ rotations use explicit clockwise transforms and white canvas before draw (0.3076ms)
+✔ EXIF visual dimensions drive user rotation; mirror pixels remain a browser gate (0.3606ms)
+✔ transparent PNG follows the white flattening path (operation assertions only) (0.4753ms)
+✔ cancel after JPEG arrayBuffer settles fences the last asynchronous boundary (0.9079ms)
+✔ A16 source EXIF/canary and filename never passed to the output writer (0.3632ms)
+✔ A01 20 accepted, 21 rejected before a read/decode (1.9214ms)
+✔ A02 per-file bytes: exact hard cap and +1 (0.1965ms)
+✔ A03 20 files total: 64MiB and one extra byte (0.1453ms)
+✔ A04 magic rather than name/MIME; PNG and JPEG dimensions (0.7469ms)
+✔ A05 APNG rejected in metadata preflight (0.4001ms)
+✔ A06 exact pixel and edge limits (0.4128ms)
+✔ A07 EXIF all orientations, both endian orders, PNG eXIf (1.0773ms)
+✔ A07 invalid EXIF never falls back silently (0.3645ms)
+✔ truncated/zero/CRC/unknown critical/chunk overflow rejected (0.2779ms)
+✔ all selections preflight before use; failures identify the source, no raw errors (0.2661ms)
+✔ late preflight result is discarded after cancel or generation change (0.155ms)
+✔ publishing never creates a URL; explicit download binds to current generation (1.0271ms)
+✔ preview/download expiry <=60s, reset/pagehide/dispose idempotent and no stale preview (0.6853ms)
+✔ A08 ordering and turns serialized without mutation (0.9239ms)
+✔ A09 independent A4 1000x500 oracle (0.909ms)
+✔ A10 Letter landscape explicit contain oracle (0.1224ms)
+✔ all supported papers contain extreme tall/wide images with margin and matching aspect (0.1698ms)
+✔ invalid numbers/settings and raised hard caps fail closed (0.4044ms)
+✔ A11 two pages, fixed object graph and caller order (2.1158ms)
+✔ A12 fake opaque JPEG stream preserves 6 exact bytes including NUL and LF (0.3214ms)
+✔ A13 precise ASCII operations and direct length (0.2083ms)
+✔ A14/A15 all xref offsets, UTF8 comment bytes, startxref and EOF (0.2371ms)
+✔ A16 fixed template and filename; user labels cannot enter the writer schema (0.4175ms)
+✔ A17 maxBytes exact length and one less reject before returning bytes (20.0563ms)
+✔ invalid schema, count, JPEG, fit and paper rejected (0.2038ms)
+✔ package stays private and dependency-free (2.8379ms)
+✔ build allowlist: exact portable assets, bytes match; unknown output is retained and rejected (64.8901ms)
+✔ build rejects unknown source, missing source, and indexing/canonical mutation (32.6499ms)
+✔ source/destination directory junctions are rejected without following them (24.9832ms)
+✔ offline handler unit: GET/HEAD/MIME/Host/method/path allowlist; no listener started (0.4558ms)
+ℹ tests 47
+ℹ suites 0
+ℹ pass 47
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 270.0045

@@ -1,0 +1,5 @@
+
+> glossquote-labs-images-to-pdf@0.1.0-m1 build:release
+> node scripts/release.mjs build
+
+PASS build: 17 release-candidate assets, 13 frozen M1 inputs, manifest b5b5b9f08c7821c39554098ca95a59945a5840030d54768124f52739b8027f59. Offline only; not deployed.

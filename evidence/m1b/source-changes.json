@@ -1,0 +1,121 @@
+{
+  "protectedFilesUnchanged": true,
+  "changes": [
+    {
+      "path": ".gitignore",
+      "kind": "modified",
+      "before": {
+        "path": ".gitignore",
+        "bytes": 26,
+        "sha256": "88e6ec8976a799b7cc4fff5050fc7e9081b7e082c199e907b268262a6568be59"
+      },
+      "after": {
+        "path": ".gitignore",
+        "bytes": 45,
+        "sha256": "d1f44ab4b4f0f75cf8f1fa8e7771e087500dbfec618be0e2a7b8f1d9f2bfdfd1"
+      }
+    },
+    {
+      "path": "HANDOFF.md",
+      "kind": "modified",
+      "before": {
+        "path": "HANDOFF.md",
+        "bytes": 10562,
+        "sha256": "27401661b467c95abb11f8fdfcceca28823b391d26734f90d4a70dd0ec802e33"
+      },
+      "after": {
+        "path": "HANDOFF.md",
+        "bytes": 14685,
+        "sha256": "490652c43e83a9533f14cc4471c0582816c8dabb9d9f05fc02b4c312438d7587"
+      }
+    },
+    {
+      "path": "M1B-RELEASE.md",
+      "kind": "added",
+      "before": null,
+      "after": {
+        "path": "M1B-RELEASE.md",
+        "bytes": 5219,
+        "sha256": "256c2456c9fe37777f02f84773e0abbff231d45f66f4c1598ea6e039c551d698"
+      }
+    },
+    {
+      "path": "package.json",
+      "kind": "modified",
+      "before": {
+        "path": "package.json",
+        "bytes": 320,
+        "sha256": "99561d5a3abc4562a45a53f2874457ea3675ab74ca3145d73d9fbd3221fe2df2"
+      },
+      "after": {
+        "path": "package.json",
+        "bytes": 430,
+        "sha256": "a86553d432830cdc974e7f7006fe887f04aea2c1f23efbdef0e1c248d3b23598"
+      }
+    },
+    {
+      "path": "scripts/release-baseline.json",
+      "kind": "added",
+      "before": null,
+      "after": {
+        "path": "scripts/release-baseline.json",
+        "bytes": 2197,
+        "sha256": "513b9cc32bb9f833d61195692b0a5dd2f8ef57af6b932e95bf6b2e000dd3a4bb"
+      }
+    },
+    {
+      "path": "scripts/release-html.mjs",
+      "kind": "added",
+      "before": null,
+      "after": {
+        "path": "scripts/release-html.mjs",
+        "bytes": 7907,
+        "sha256": "dc2919e56b0d3760578e467d63686b03c52de8c750ec6715acb95eba5e776afe"
+      }
+    },
+    {
+      "path": "scripts/release.mjs",
+      "kind": "added",
+      "before": null,
+      "after": {
+        "path": "scripts/release.mjs",
+        "bytes": 10179,
+        "sha256": "264320d953ce9d47c36a675ae731a84536e945c2ffbb686d4c808dd5a923d06a"
+      }
+    },
+    {
+      "path": "scripts/verify-release.mjs",
+      "kind": "added",
+      "before": null,
+      "after": {
+        "path": "scripts/verify-release.mjs",
+        "bytes": 1897,
+        "sha256": "c268ed80983359b08684d5f02327f0684c12d76423494744e71017a97301bbea"
+      }
+    },
+    {
+      "path": "TASK-ENTRY.md",
+      "kind": "modified",
+      "before": {
+        "path": "TASK-ENTRY.md",
+        "bytes": 2913,
+        "sha256": "b72e902d87fb78fce271cc6cebc0d84367e40f950bd573816d3d8e77a00f72df"
+      },
+      "after": {
+        "path": "TASK-ENTRY.md",
+        "bytes": 3868,
+        "sha256": "6b16f9b61cac766eafd14a93a6d10891686641e4bdbb3f23a9ef2ecd1da04315"
+      }
+    },
+    {
+      "path": "test/release.test.mjs",
+      "kind": "added",
+      "before": null,
+      "after": {
+        "path": "test/release.test.mjs",
+        "bytes": 16682,
+        "sha256": "0e6e66216ec8127c451d72131c03ea3f5b4c821d1f65a8a91517288d07f1575a"
+      }
+    }
+  ]
+}

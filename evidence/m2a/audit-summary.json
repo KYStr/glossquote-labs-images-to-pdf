@@ -1,0 +1,13 @@
+{
+  "task": "B20-46-M2A",
+  "status": "PASS",
+  "protectedFilesUnchanged": 118,
+  "sourceChanged": 7,
+  "sources": 54,
+  "sourceBytes": 276868,
+  "sourceAggregateSha256": "f184abbdb7711485897de8a9cdcda4ff3264931577bd3a2021e45bbac78e5214",
+  "artifacts": 18,
+  "artifactBytes": 76549,
+  "artifactAggregateSha256": "c58f1c9c771981405c953020642c56c5e39a8c2a8992b81571a2613e4c899e3b",
+  "releaseManifestSha256": "b5b5b9f08c7821c39554098ca95a59945a5840030d54768124f52739b8027f59"
+}

@@ -1,0 +1,56 @@
+diff --git a/release-artifacts/manifest.json b/release-artifacts/manifest.json
+--- a/release-artifacts/manifest.json
++++ b/release-artifacts/manifest.json
+@@ -10,14 +10,19 @@
+       "sha256": "5af27975384df8203544069f2e9522ab12fd82402f3d7e222692cccdee2ad3e0"
+     },
+     {
++      "path": "_redirects",
++      "bytes": 65,
++      "sha256": "9e47a2579b08f461b1124de1e42a1bde7a79ca29d77401104f6f432d8be90e1e"
++    },
++    {
+       "path": "en/index.html",
+-      "bytes": 6872,
+-      "sha256": "6fe37b60a9bd8764ca1d0811e3151d344c05fb8900288b7a9574e6dc9704dfe9"
++      "bytes": 6829,
++      "sha256": "a233afe99bf3ed63f905fcbc5e684ac0853f4a01f006cb4cac8025e53dc854f5"
+     },
+     {
+       "path": "index.html",
+-      "bytes": 6583,
+-      "sha256": "6a940a4e6d7232cad82bd41eed873de8b40e9f67ee98b9ae23ce165121832975"
++      "bytes": 6540,
++      "sha256": "b2941fc9558ef01533bf0b81f439de31b650e8545fe194691c1ae82da3263e21"
+     },
+     {
+       "path": "js/app.js",
+diff --git a/release-artifacts/site/_redirects b/release-artifacts/site/_redirects
+--- /dev/null
++++ b/release-artifacts/site/_redirects
+@@ -0,0 +1,3 @@
++/ /index.html 301
++/en /en/index.html 301
++/en/ /en/index.html 301
+diff --git a/release-artifacts/site/en/index.html b/release-artifacts/site/en/index.html
+--- a/release-artifacts/site/en/index.html
++++ b/release-artifacts/site/en/index.html
+@@ -72,6 +72,6 @@
+       <details><summary>Will the PDF contain filenames or GPS data?</summary><p>Source filenames and photo metadata are not added. The PDF contains re-encoded page images. Names, addresses, or other details visible in the image remain visible; check them yourself.</p></details>
+     </section>
+   </main>
+-  <footer>Gloss Tools by GlossQuote · Local candidate; not publicly released.</footer>
++  <footer>Gloss Tools by GlossQuote</footer>
+ </body>
+ </html>
+diff --git a/release-artifacts/site/index.html b/release-artifacts/site/index.html
+--- a/release-artifacts/site/index.html
++++ b/release-artifacts/site/index.html
+@@ -72,6 +72,6 @@
+       <details><summary>PDF 會留下檔名或 GPS 資料嗎？</summary><p>不會加入來源檔名或照片 metadata；PDF 只含重新編碼的頁面影像。影像畫面中的姓名、地址等內容仍會保留，請自行檢查。</p></details>
+     </section>
+   </main>
+-  <footer>Gloss Tools by GlossQuote · 本地候選版，尚未公開發布。</footer>
++  <footer>Gloss Tools by GlossQuote</footer>
+ </body>
+ </html>

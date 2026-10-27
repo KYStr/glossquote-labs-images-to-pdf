@@ -1,0 +1,414 @@
+diff --git a/HANDOFF.md b/HANDOFF.md
+--- a/HANDOFF.md
++++ b/HANDOFF.md
+@@ -99,3 +99,39 @@
+ 必要真browser/Canvas/JPEG/PDF viewer/視覺/keyboard/實際下載/Network/Storage/hosting header/原生/真機 gates仍 **NOT_RUN_USER_FOCUS_INCIDENT**。`_headers`配置通過不等於實際HTTP headers已驗。沒有GitHub／source commit／reviewed/released commit、部署或首頁發布；單一ZIP仍由主代理整合。
+ 
+ 需要主代理後續決定：核准的真正隔離驗收機制與必要browser gates完成後，才另行M2發布放行。本輪沒有新依賴或權限需求。若未來來源刻意改版或首次I/O失敗留下不完整候選，需主代理另設有界baseline／輸出恢復任務；本工具拒絕自行清除或擴權。
++
++## B20-46-M2A 發布候選準備（2026-10-27 追加，最新狀態）
++
++**M2A PREPARED；等待主代理 M2B，沒有 push／deploy／首頁整合／外部驗收。** 本節更新先前階段的待驗狀態；M1、M1B 與舊證據保留各自歷史身分。requested gpt-6.1-sol/max 未改，沒有委派、另開 chat 或宣稱已驗證 backend identity。
++
++主代理已親跑隔離 Chromium `145.0.7632.6` 的 `b20-46-r3`：32 PASS／10 NOT_RUN／0 FAIL、prohibited=[]，並回報已目視實際 screenshots。已讀回原 RUN 的結果與最後 parent-cleanup PASS；實際下載 PDF bytes、內嵌 JPEG pixels、EXIF 1–8、A4/Letter、取消／stale、鍵盤／320px、network/storage 等 PASS 沿用未修改的產品版本。可核對的 receipt 路徑、bytes/SHA、下載 PDF 範例與完整 case 狀態見 [browser-acceptance-reference](evidence/m2a/browser-acceptance-reference.json)。本功能對話沒有啟動 browser、IAB、CDP、server、native UI 或碰使用者輸入環境。
++
++精確變更：新增 `wrangler.jsonc`、`scripts/worker-config.mjs`；修改 `scripts/check.mjs`、`scripts/release.mjs`、`scripts/release-html.mjs`、`test/release.test.mjs`，本 HANDOFF 追加紀錄。新證據只在 `evidence/m2a/`。public、dist、browser/core runtime、原規格／AGENTS／docs、原測試其餘部分、舊 evidence/m1/m1b 全部保留原 bytes。逐檔 before/after bytes/SHA 與實際差異見 [source-changes](evidence/m2a/source-changes.json)、[source.diff](evidence/m2a/source.diff)、[release.diff](evidence/m2a/release.diff)。
++
++Wrangler 採 42 的精確 assets-only 格式，僅替換 name/domain：Worker `glossquote-images-to-pdf`、domain `image-pdf.glossquote.com`、compatibility date `2026-10-24`。workers.dev／preview URLs／metrics／logs／invocation logs／traces 全關；assets 只指向 `./release-artifacts/site`、run_worker_first=false、html_handling=none、not_found_handling=none。沒有 executable Worker、binding、vars、env 或額外 routes。check 和 release preflight 均拒絕配置偏移；沒有安裝或執行 Wrangler，靜態檢查不代表 Cloudflare 已接受或已部署。
++
++release 只對兩個 allowlisted footer 節點移除候選／未發布字樣，保留 `Gloss Tools by GlossQuote`。HTML head／SEO／其餘 body 與舊 release 全 bytes 相同；public HTML 原候選聲明仍保留。新增 `_redirects` 為三行真正 LF，含末尾 LF：
++
++```text
++/ /index.html 301
++/en /en/index.html 301
++/en/ /en/index.html 301
++```
++
++release site 現為 17 檔，加同層 manifest 共 18 檔；manifest 閉合記錄 `_redirects`。新 manifest SHA-256：`b5b5b9f08c7821c39554098ca95a59945a5840030d54768124f52739b8027f59`。build/check 仍依 pinned public 與固定規則重建 expected bytes，不能透過修改資產及同步 manifest hash 偽造通過；不提供自動覆寫／刪除輸出。
++
++此次已獲授權的單次候選替換先驗證舊 17 檔符合 M1B freeze，再將完整原目錄移至 [previous-release-artifacts](evidence/m2a/previous-release-artifacts/manifest.json)，然後另建新 release-artifacts。舊 manifest SHA 仍為 `b89031e973e6b0ba6aa54b2bfe2f8852e19217c669816598a82f7d645d16184a`；舊全檔 bytes/SHA 及移動前後驗證見 [preservation](evidence/m2a/previous-release-preservation.json)。舊 evidence 與舊 manifest bytes 未改；先前章節指向目前 release-artifacts 的歷史 manifest 請改以這份保存副本核對。
++
++|本輪實際命令／驗證|exit|結果|
++|---|---:|---|
++|node --test test/release.test.mjs|0|21 tests／21 pass／0 fail,cancelled,skipped,todo|
++|npm run check|0|13 public files；既有靜態檢查與精確 assets-only config|
++|npm run build:release|0|17 site assets＋manifest，未部署|
++|npm run check:release|0|來源、完整輸出 bytes、HTML、redirects、config、manifest PASS|
++|環境 guard 前後完整 Snapshots 比較|0|PASS；HKCU/HKLM PATH 與完整 Environment-key／TEMP/TMP fingerprints 完全相同|
++
++Node `v24.14.0`，使用既有 npm-cli.js；子程序 shell:false/windowsHide:true。命令、exit、counts、log SHA 見 [final-commands](evidence/m2a/final-commands.json)。新負例含 redirect 目標改寫、額外行、缺行、CRLF、缺末尾 LF、與 manifest hash 同步竄改；footer 重複／巢狀／屬性／非 allowlist 字樣；Worker routes、telemetry、bindings、vars、fallback 等偏移。原 49 項產品測試輸入未變，沿用 M1B 的通過證據，本輪沒有重跑 full npm test 或 preview build。完整來源、產物與保護範圍見 [sources-final](evidence/m2a/sources-final.json)、[artifacts-final](evidence/m2a/artifacts-final.json)、[release-delta-proof](evidence/m2a/release-delta-proof.json)、[FREEZE](evidence/m2a/FREEZE.json)。
++
++剩餘 10 個 browser NOT_RUN 維持原狀（兩語各五項）：原生 PDF viewer A4／Letter、真正 200% 文字縮放、viewer visible content、原生 OS dialogs／真機 AT。另有 MIME 不一致的 raw-byte 子斷言未驗；不可用產品錯誤文案或離線 mock 取代。主代理對產品 screenshots 的目視回報不改寫原生 viewer NOT_RUN。M2A 的 footer／redirect／config 只有離線驗證，Cloudflare 實際 redirects／headers／404、GitHub repo/visibility/commit、hosting、首頁與外部驗收仍未執行；source/reviewed/released commit 均 NONE。
++
++沒有讀憑證／token、變更持久環境／Git auth/config、安裝依賴、push、deploy、付費或製作額外 ZIP。下一階段為主代理 M2B；本輪候選準備通過不等於產品或發布完成。
+diff --git a/scripts/check.mjs b/scripts/check.mjs
+--- a/scripts/check.mjs
++++ b/scripts/check.mjs
+@@ -2,8 +2,10 @@
+ import path from 'node:path';
+ import { spawnSync } from 'node:child_process';
+ import { ROOT, PUBLIC_FILES, inventory, requireNode } from './files.mjs';
++import { checkWorkerConfig } from './worker-config.mjs';
+ 
+ requireNode();
++await checkWorkerConfig();
+ const files = await inventory(path.join(ROOT, 'public'));
+ if (JSON.stringify(files) !== JSON.stringify([...PUBLIC_FILES].sort())) throw new Error('Missing public file');
+ const pkg = JSON.parse(await readFile(path.join(ROOT, 'package.json'), 'utf8'));
+@@ -48,4 +50,4 @@
+   }
+ }
+ for (const folder of ['public', 'scripts', 'test']) await syntax(path.join(ROOT, folder));
+-console.log(`PASS check: ${files.length} public files; ESM syntax, local resources, preview noindex. Static checks are not browser/security proof.`);
++console.log(`PASS check: ${files.length} public files; ESM syntax, local resources, preview noindex, exact assets-only Worker config. Static checks are not browser/security proof.`);
+diff --git a/scripts/release-html.mjs b/scripts/release-html.mjs
+--- a/scripts/release-html.mjs
++++ b/scripts/release-html.mjs
+@@ -92,14 +92,26 @@
+     title: '多張圖片合成 PDF｜排序、轉向、不裁切',
+     description: '在本機將 JPEG/PNG 照片依序放入 A4 或 Letter PDF，每張一頁，可旋轉並保留完整圖片，不需上傳。',
+     h1: '把照片整理成一份順序正確的 PDF',
++    candidateFooter: '<footer>Gloss Tools by GlossQuote · 本地候選版，尚未公開發布。</footer>',
+   },
+   'en/index.html': {
+     lang: 'en',
+     title: 'Images to PDF | Order, Rotate, and Fit Photos to Pages',
+     description: 'Turn local JPEG or PNG images into one ordered A4 or Letter PDF, one uncropped image per page, processed in your browser.',
+     h1: 'Put your images into one ordered PDF',
++    candidateFooter: '<footer>Gloss Tools by GlossQuote · Local candidate; not publicly released.</footer>',
+   },
+ });
++const RELEASE_FOOTER = '<footer>Gloss Tools by GlossQuote</footer>';
++function exactFooter(html, tokens, file, candidate) {
++  if (!METADATA[file]) invalid();
++  const footers = tokens.filter(token => token.name === 'footer');
++  if (footers.length !== 1) invalid();
++  const footer = footers[0];
++  if (footer.parent?.name !== 'body' || tokens.filter(token => token.parent === footer.parent).at(-1) !== footer ||
++      html.slice(footer.start, footer.end) !== (candidate ? METADATA[file].candidateFooter : RELEASE_FOOTER)) invalid();
++  return footer;
++}
+ export function validateReleaseHtml(html, file) {
+   const expected = METADATA[file];
+   if (!expected) invalid();
+@@ -109,6 +121,7 @@
+   const head = one(tokens.filter(token => token.name === 'head'));
+   const body = one(tokens.filter(token => token.name === 'body'));
+   if (root.parent || root.attrs.lang !== expected.lang || head.parent !== root || body.parent !== root || head.end > body.start) invalid();
++  exactFooter(html, tokens, file, false);
+   const title = one(tokens.filter(token => token.name === 'title'));
+   const h1 = one(tokens.filter(token => token.name === 'h1'));
+   const meta = name => tokens.filter(token => token.name === 'meta' && token.attrs.name?.toLowerCase() === name);
+@@ -133,6 +146,7 @@
+   const old = '<meta name="robots" content="noindex,nofollow">';
+   const content = source.slice(head[0].openEnd, head[0].closeStart);
+   if (content.split(old).length !== 2 || tokens.some(token => token.name === 'link' && ['canonical', 'alternate'].includes(token.attrs.rel))) invalid();
++  const footer = exactFooter(source, tokens, file, true);
+   const newline = source.includes('\r\n') ? '\r\n' : '\n';
+   const links = [
+     `  <link rel="canonical" href="https://image-pdf.glossquote.com/${file}">`,
+@@ -140,7 +154,10 @@
+     '  <link rel="alternate" hreflang="en" href="https://image-pdf.glossquote.com/en/index.html">',
+     '  <link rel="alternate" hreflang="x-default" href="https://image-pdf.glossquote.com/index.html">',
+   ].join(newline) + newline;
+-  const output = source.slice(0, head[0].openEnd) + content.replace(old, '<meta name="robots" content="index,follow">') + links + source.slice(head[0].closeStart);
++  // Only this exact, single, direct-body footer node is allowlisted for the M2A copy change.
++  // Slice by parsed offsets; matching text in comments, scripts or other nodes is untouched.
++  const tail = source.slice(head[0].closeStart, footer.start) + RELEASE_FOOTER + source.slice(footer.end);
++  const output = source.slice(0, head[0].openEnd) + content.replace(old, '<meta name="robots" content="index,follow">') + links + tail;
+   validateReleaseHtml(output, file);
+   return output;
+ }
+diff --git a/scripts/release.mjs b/scripts/release.mjs
+--- a/scripts/release.mjs
++++ b/scripts/release.mjs
+@@ -6,10 +6,11 @@
+ import { ROOT, PUBLIC_FILES, requireNode } from './files.mjs';
+ import { CSP } from './serve.mjs'; // Import only: its CLI entry guard does not start a listener.
+ import { renderReleaseHtml, validateReleaseHtml } from './release-html.mjs';
++import { checkWorkerConfig } from './worker-config.mjs';
+ 
+ export const RELEASE_ORIGIN = 'https://image-pdf.glossquote.com';
+ export const TOOL_SLUG = 'images-to-pdf';
+-const SITE_FILES = Object.freeze([...new Set([...PUBLIC_FILES, 'robots.txt', '_headers', 'sitemap.xml'])].sort());
++const SITE_FILES = Object.freeze([...new Set([...PUBLIC_FILES, 'robots.txt', '_headers', '_redirects', 'sitemap.xml'])].sort());
+ const OUTPUT_FILES = Object.freeze(['manifest.json', ...SITE_FILES.map(file => `site/${file}`)].sort());
+ const hash = bytes => createHash('sha256').update(bytes).digest('hex');
+ function reject(code) { throw new Error(code); }
+@@ -87,6 +88,7 @@
+ }
+ export async function prepareRelease(root = ROOT) {
+   requireNode();
++  await checkWorkerConfig(root);
+   const origin = new URL(RELEASE_ORIGIN);
+   if (origin.origin !== RELEASE_ORIGIN || origin.protocol !== 'https:' || origin.hostname !== 'image-pdf.glossquote.com' || origin.port || origin.username || origin.password || origin.pathname !== '/' || origin.search || origin.hash) reject('RELEASE_ORIGIN_INVALID');
+   const { source, records } = await sourceBytes(root);
+@@ -95,6 +97,7 @@
+   site.set('robots.txt', Buffer.from(`User-agent: *\nAllow: /\nSitemap: ${RELEASE_ORIGIN}/sitemap.xml\n`));
+   site.set('sitemap.xml', Buffer.from(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>${RELEASE_ORIGIN}/index.html</loc></url>\n  <url><loc>${RELEASE_ORIGIN}/en/index.html</loc></url>\n</urlset>\n`));
+   site.set('_headers', Buffer.from(`/*\n  Content-Security-Policy: ${CSP}\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: no-referrer\n  X-Robots-Tag: index, follow\n  Cache-Control: no-store\n`));
++  site.set('_redirects', Buffer.from('/ /index.html 301\n/en /en/index.html 301\n/en/ /en/index.html 301\n'));
+   const files = SITE_FILES.map(file => ({ path: file, bytes: site.get(file).length, sha256: hash(site.get(file)) }));
+   const manifest = Buffer.from(JSON.stringify({ schemaVersion: 1, mode: 'release-candidate', origin: RELEASE_ORIGIN, toolSlug: TOOL_SLUG, files, sourceFiles: records }, null, 2) + '\n');
+   return { site, manifest, files, sourceFiles: records };
+diff --git a/scripts/worker-config.mjs b/scripts/worker-config.mjs
+--- /dev/null
++++ b/scripts/worker-config.mjs
+@@ -0,0 +1,40 @@
++import { lstat, readFile } from 'node:fs/promises';
++import path from 'node:path';
++import { isDeepStrictEqual } from 'node:util';
++import { ROOT } from './files.mjs';
++
++// Exact assets-only contract from tool 42; the worker name and route are tool 46's.
++// No executable worker, extra route, binding, environment or telemetry override.
++const EXPECTED = {
++  name: 'glossquote-images-to-pdf',
++  compatibility_date: '2026-10-24',
++  workers_dev: false,
++  preview_urls: false,
++  send_metrics: false,
++  routes: [{ pattern: 'image-pdf.glossquote.com', custom_domain: true }],
++  observability: {
++    enabled: false,
++    logs: { enabled: false, invocation_logs: false },
++    traces: { enabled: false },
++  },
++  assets: {
++    directory: './release-artifacts/site',
++    run_worker_first: false,
++    html_handling: 'none',
++    not_found_handling: 'none',
++  },
++  build: { command: 'node scripts/release.mjs build' },
++};
++function invalid() { throw new Error('RELEASE_CONFIG_INVALID'); }
++export function validateWorkerConfig(value) {
++  if (!isDeepStrictEqual(value, EXPECTED)) invalid();
++  return value;
++}
++export async function checkWorkerConfig(root = ROOT) {
++  try {
++    const directory = await lstat(root), file = path.join(root, 'wrangler.jsonc');
++    const info = await lstat(file);
++    if (!directory.isDirectory() || directory.isSymbolicLink() || !info.isFile() || info.isSymbolicLink() || info.size > 16_384) invalid();
++    return validateWorkerConfig(JSON.parse(await readFile(file, 'utf8')));
++  } catch { invalid(); }
++}
+diff --git a/test/release.test.mjs b/test/release.test.mjs
+--- a/test/release.test.mjs
++++ b/test/release.test.mjs
+@@ -6,10 +6,17 @@
+ import { createHash } from 'node:crypto';
+ import { ROOT, PUBLIC_FILES } from '../scripts/files.mjs';
+ import { buildRelease, checkRelease, parseReleaseArgs, RELEASE_ORIGIN, TOOL_SLUG } from '../scripts/release.mjs';
+-import { parseStaticHtml, validateReleaseHtml } from '../scripts/release-html.mjs';
++import { parseStaticHtml, renderReleaseHtml, validateReleaseHtml } from '../scripts/release-html.mjs';
++import { checkWorkerConfig, validateWorkerConfig } from '../scripts/worker-config.mjs';
+ 
+ const ORIGIN = 'https://image-pdf.glossquote.com';
+-const assets = [...PUBLIC_FILES, '_headers', 'robots.txt', 'sitemap.xml'].sort();
++const assets = [...PUBLIC_FILES, '_headers', '_redirects', 'robots.txt', 'sitemap.xml'].sort();
++const expectedRedirects = '/ /index.html 301\n/en /en/index.html 301\n/en/ /en/index.html 301\n';
++const releaseFooter = '<footer>Gloss Tools by GlossQuote</footer>';
++const candidateFooters = {
++  'index.html': '<footer>Gloss Tools by GlossQuote · 本地候選版，尚未公開發布。</footer>',
++  'en/index.html': '<footer>Gloss Tools by GlossQuote · Local candidate; not publicly released.</footer>',
++};
+ const sha = bytes => createHash('sha256').update(bytes).digest('hex');
+ const expectedCsp = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'";
+ async function fixture(run) {
+@@ -22,7 +29,8 @@
+       await writeFile(target, await readFile(path.join(ROOT, 'public', file)));
+     }
+     await mkdir(path.join(root, 'scripts'));
+-    for (const name of ['files.mjs', 'serve.mjs', 'release.mjs', 'release-html.mjs', 'release-baseline.json']) await writeFile(path.join(root, 'scripts', name), await readFile(path.join(ROOT, 'scripts', name)));
++    for (const name of ['files.mjs', 'serve.mjs', 'release.mjs', 'release-html.mjs', 'release-baseline.json', 'worker-config.mjs']) await writeFile(path.join(root, 'scripts', name), await readFile(path.join(ROOT, 'scripts', name)));
++    await writeFile(path.join(root, 'wrangler.jsonc'), await readFile(path.join(ROOT, 'wrangler.jsonc')));
+     await run(root);
+   } finally {
+     assert.equal(path.dirname(path.resolve(root)), base);
+@@ -52,12 +60,12 @@
+   await edit(manifest);
+   await writeFile(file, JSON.stringify(manifest, null, 2) + '\n');
+ }
+-test('release bilingual SEO is reciprocal at fixed origin, head-only changes, candidate body preserved', async () => {
++test('release bilingual SEO is reciprocal; only the exact candidate footer changes in body', async () => {
+   await fixture(async root => {
+     assert.equal(RELEASE_ORIGIN, ORIGIN); assert.equal(TOOL_SLUG, 'images-to-pdf');
+     const before = await snapshot(path.join(root, 'public'));
+     await buildRelease(root);
+-    const report = await checkRelease(root); assert.equal(report.files, 16); assert.equal(report.sourceFiles, 13);
++    const report = await checkRelease(root); assert.equal(report.files, 17); assert.equal(report.sourceFiles, 13);
+     for (const file of ['index.html', 'en/index.html']) {
+       const source = await readFile(path.join(root, 'public', file), 'utf8');
+       const html = await readFile(path.join(root, 'release-artifacts', 'site', file), 'utf8');
+@@ -69,10 +77,10 @@
+         { rel: 'alternate', hreflang: 'x-default', href: `${ORIGIN}/index.html` },
+       ]);
+       const seoRemoved = html.replace(/  <link rel="(?:canonical|alternate)"[^>]*>\r?\n/g, '').replace('<meta name="robots" content="index,follow">', '<meta name="robots" content="noindex,nofollow">');
+-      assert.equal(seoRemoved, source);
+-      assert.equal(html.slice(html.indexOf('</head>')), source.slice(source.indexOf('</head>')));
++      assert.equal(seoRemoved.replace(releaseFooter, candidateFooters[file]), source);
++      assert.equal(html.slice(html.indexOf('</head>')), source.slice(source.indexOf('</head>')).replace(candidateFooters[file], releaseFooter));
+       assert.ok(source.includes('noindex,nofollow') && !source.includes('rel="canonical"'));
+-      assert.ok(html.includes(file === 'index.html' ? '本地候選版，尚未公開發布。' : 'Local candidate; not publicly released.'));
++      assert.ok(html.includes(releaseFooter) && !html.includes(candidateFooters[file]));
+     }
+     assert.deepEqual(await snapshot(path.join(root, 'public')), before);
+   });
+@@ -85,6 +93,8 @@
+     for (const file of PUBLIC_FILES.filter(file => !file.endsWith('.html'))) assert.deepEqual(await readFile(path.join(site, file)), await readFile(path.join(root, 'public', file)));
+     assert.equal(await readFile(path.join(site, 'robots.txt'), 'utf8'), 'User-agent: *\nAllow: /\nSitemap: https://image-pdf.glossquote.com/sitemap.xml\n');
+     assert.equal(await readFile(path.join(site, '_headers'), 'utf8'), `/*\n  Content-Security-Policy: ${expectedCsp}\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: no-referrer\n  X-Robots-Tag: index, follow\n  Cache-Control: no-store\n`);
++    assert.deepEqual(await readFile(path.join(site, '_redirects')), Buffer.from(expectedRedirects));
++    assert.equal(expectedRedirects.split('\n').length, 4); // Three lines and the required final LF.
+     const sitemap = await readFile(path.join(site, 'sitemap.xml'), 'utf8');
+     assert.deepEqual([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1]), [`${ORIGIN}/index.html`, `${ORIGIN}/en/index.html`]);
+     assert.ok(!sitemap.includes('lastmod'));
+@@ -135,6 +145,35 @@
+     assert.deepEqual(await snapshot(path.join(root, 'release-artifacts')), damaged);
+   });
+ });
++for (const [name, change] of [
++  ['changed target', text => text.replace('/en /en/index.html', '/en /index.html')],
++  ['extra line', text => text + '/other /index.html 301\n'],
++  ['missing line', text => text.replace('/en/ /en/index.html 301\n', '')],
++  ['CRLF line endings', text => text.replaceAll('\n', '\r\n')],
++  ['missing final LF', text => text.slice(0, -1)],
++]) test(`redirects reject ${name} and preserve damaged outputs`, async () => {
++  await fixture(async root => {
++    await buildRelease(root);
++    const redirects = path.join(root, 'release-artifacts', 'site', '_redirects');
++    await writeFile(redirects, change(expectedRedirects));
++    const before = await snapshot(path.join(root, 'release-artifacts'));
++    await assert.rejects(checkRelease(root), /RELEASE_OUTPUT_CHANGED/);
++    await assert.rejects(buildRelease(root), /RELEASE_OUTPUT_CHANGED/);
++    assert.deepEqual(await snapshot(path.join(root, 'release-artifacts')), before);
++  });
++});
++test('redirect + manifest coordinated hash tamper cannot redefine allowed routes', async () => {
++  await fixture(async root => {
++    await buildRelease(root);
++    const changed = Buffer.from(expectedRedirects.replace('/en/ /en/index.html 301', '/en/ https://evil.invalid/ 302'));
++    await writeFile(path.join(root, 'release-artifacts', 'site', '_redirects'), changed);
++    await rewriteManifest(root, manifest => { const row = manifest.files.find(file => file.path === '_redirects'); row.bytes = changed.length; row.sha256 = sha(changed); });
++    const before = await snapshot(path.join(root, 'release-artifacts'));
++    await assert.rejects(checkRelease(root), /RELEASE_OUTPUT_CHANGED/);
++    await assert.rejects(buildRelease(root), /RELEASE_OUTPUT_CHANGED/);
++    assert.deepEqual(await snapshot(path.join(root, 'release-artifacts')), before);
++  });
++});
+ test('release rejects missing/extra/unknown directories/unmanaged output, preserving all fixture files', async () => {
+   for (const mutation of ['missing', 'extra', 'directory', 'unmanaged']) await fixture(async root => {
+     await buildRelease(root);
+@@ -217,6 +256,10 @@
+         html.replace('name="robots" content="index,follow"', 'name="robots" content="noindex,nofollow"'),
+         html.replace('<title>', '<title>WRONG '),
+         html.replace('name="description" content="', 'name="description" content="WRONG '),
++        html.replace(releaseFooter, candidateFooters[file]),
++        html.replace(releaseFooter, `<div>${releaseFooter}</div>`),
++        html.replace(releaseFooter, releaseFooter + releaseFooter),
++        html.replace(releaseFooter, '<footer hidden>Gloss Tools by GlossQuote</footer>'),
+       ];
+       for (const variant of variants) assert.throws(() => validateReleaseHtml(variant, file), /RELEASE_HTML_INVALID/);
+     }
+@@ -225,6 +268,72 @@
+     assert.equal(parsed.find(token => token.name === 'input').attrs.multiple, '');
+   });
+ });
++test('release footer transformation is confined to one exact allowlisted parsed node', async () => {
++  for (const file of ['index.html', 'en/index.html']) {
++    const source = await readFile(path.join(ROOT, 'public', file), 'utf8');
++    const original = candidateFooters[file];
++    const comment = `<!-- ${original} -->`;
++    const withComment = source.replace(original, comment + original);
++    const rendered = renderReleaseHtml(withComment, file);
++    assert.ok(rendered.includes(comment + releaseFooter));
++    const variants = [
++      source.replace(original, '<footer>Unexpected candidate wording</footer>'),
++      source.replace(original, original.replace('<footer>', '<footer class="candidate">')),
++      source.replace(original, `<section>${original}</section>`),
++      source.replace(original, comment),
++      source.replace(original, original + original),
++      source.replace(original, original + '<p>After footer</p>'),
++      source.replace(original, candidateFooters[file === 'index.html' ? 'en/index.html' : 'index.html']),
++    ];
++    for (const variant of variants) assert.throws(() => renderReleaseHtml(variant, file), /RELEASE_HTML_INVALID/);
++  }
++});
++test('Worker config matches tool 42 assets-only shape with only tool-specific name and domain', async () => {
++  const value = await checkWorkerConfig();
++  assert.deepEqual(value, {
++    name: 'glossquote-images-to-pdf', compatibility_date: '2026-10-24',
++    workers_dev: false, preview_urls: false, send_metrics: false,
++    routes: [{ pattern: 'image-pdf.glossquote.com', custom_domain: true }],
++    observability: { enabled: false, logs: { enabled: false, invocation_logs: false }, traces: { enabled: false } },
++    assets: { directory: './release-artifacts/site', run_worker_first: false, html_handling: 'none', not_found_handling: 'none' },
++    build: { command: 'node scripts/release.mjs build' },
++  });
++});
++test('Worker config drift fails before output mutation, including routes, telemetry, bindings and fallback', async () => {
++  const edits = [
++    v => { v.main = 'worker.js'; }, v => { v.vars = { TOKEN: 'fake' }; },
++    v => { v.kv_namespaces = []; }, v => { v.env = {}; },
++    v => { v.name = 'other'; }, v => { v.compatibility_date = '2026-10-25'; },
++    v => { v.workers_dev = true; }, v => { v.preview_urls = true; }, v => { v.send_metrics = true; },
++    v => { v.routes[0].pattern = 'other.glossquote.com'; }, v => { v.routes[0].custom_domain = false; },
++    v => { v.routes.push({ pattern: 'extra.glossquote.com', custom_domain: true }); },
++    v => { v.observability.enabled = true; }, v => { v.observability.logs.enabled = true; },
++    v => { v.observability.logs.invocation_logs = true; }, v => { v.observability.traces.enabled = true; },
++    v => { v.assets.directory = './public'; }, v => { v.assets.run_worker_first = true; },
++    v => { v.assets.html_handling = 'auto-trailing-slash'; }, v => { v.assets.not_found_handling = 'single-page-application'; },
++    v => { v.build.command = 'node other.mjs'; }, v => { delete v.send_metrics; },
++  ];
++  await fixture(async root => {
++    await buildRelease(root);
++    const before = await snapshot(path.join(root, 'release-artifacts'));
++    const original = JSON.parse(await readFile(path.join(root, 'wrangler.jsonc')));
++    for (const edit of edits) {
++      const changed = structuredClone(original); edit(changed);
++      assert.throws(() => validateWorkerConfig(changed), /RELEASE_CONFIG_INVALID/);
++      await writeFile(path.join(root, 'wrangler.jsonc'), JSON.stringify(changed));
++      await assert.rejects(checkRelease(root), /RELEASE_CONFIG_INVALID/);
++      await assert.rejects(buildRelease(root), /RELEASE_CONFIG_INVALID/);
++      assert.deepEqual(await snapshot(path.join(root, 'release-artifacts')), before);
++    }
++    await writeFile(path.join(root, 'wrangler.jsonc'), '{malformed');
++    await assert.rejects(buildRelease(root), /RELEASE_CONFIG_INVALID/);
++    await rename(path.join(root, 'wrangler.jsonc'), path.join(root, 'held-config.jsonc'));
++    await assert.rejects(buildRelease(root), /RELEASE_CONFIG_INVALID/);
++    await mkdir(path.join(root, 'wrangler.jsonc'));
++    await assert.rejects(buildRelease(root), /RELEASE_CONFIG_INVALID/);
++    assert.deepEqual(await snapshot(path.join(root, 'release-artifacts')), before);
++  });
++});
+ test('CLI build/check succeed on task-owned copy; no args/wrong mode/extra args reject without mutation', async () => {
+   await fixture(async root => {
+     const cli = args => spawnSync(process.execPath, [path.join(root, 'scripts', 'release.mjs'), ...args], { cwd: root, shell: false, windowsHide: true, encoding: 'utf8', timeout: 10_000 });
+diff --git a/wrangler.jsonc b/wrangler.jsonc
+--- /dev/null
++++ b/wrangler.jsonc
+@@ -0,0 +1,22 @@
++{
++  "name": "glossquote-images-to-pdf",
++  "compatibility_date": "2026-10-24",
++  "workers_dev": false,
++  "preview_urls": false,
++  "send_metrics": false,
++  "routes": [
++    { "pattern": "image-pdf.glossquote.com", "custom_domain": true }
++  ],
++  "observability": {
++    "enabled": false,
++    "logs": { "enabled": false, "invocation_logs": false },
++    "traces": { "enabled": false }
++  },
++  "assets": {
++    "directory": "./release-artifacts/site",
++    "run_worker_first": false,
++    "html_handling": "none",
++    "not_found_handling": "none"
++  },
++  "build": { "command": "node scripts/release.mjs build" }
++}

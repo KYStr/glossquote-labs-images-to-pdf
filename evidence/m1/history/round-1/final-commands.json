@@ -1,0 +1,52 @@
+{
+  "node": "v24.14.0",
+  "shell": false,
+  "windowsHide": true,
+  "results": [
+    {
+      "command": "npm test",
+      "executable": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "test"
+      ],
+      "exit": 0,
+      "signal": null,
+      "counts": {
+        "tests": 47,
+        "pass": 47,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "logSha256": "6d30bb9b81ee68cd4a592d7e8b02788986df85e5ad1dcd3bf6f3437d55bc2e05"
+    },
+    {
+      "command": "npm run check",
+      "executable": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "run",
+        "check"
+      ],
+      "exit": 0,
+      "signal": null,
+      "counts": {},
+      "logSha256": "6324c56f3ad6b067c6036ffcfdb7f2e93beb08d5f60fc1602881bd2ece956b1a"
+    },
+    {
+      "command": "npm run build",
+      "executable": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "run",
+        "build"
+      ],
+      "exit": 0,
+      "signal": null,
+      "counts": {},
+      "logSha256": "69c2bdf5e828527cf8e73c6f4bbd6b163309d0dc1548c77b1046805d774b4c04"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "task": "B20-46-M2A",
+  "node": "v24.14.0",
+  "shell": false,
+  "windowsHide": true,
+  "results": [
+    {
+      "command": "node --test test/release.test.mjs",
+      "executable": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "--test",
+        "test/release.test.mjs"
+      ],
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "counts": {
+        "tests": 21,
+        "pass": 21,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "log": "final-affected-tests.log",
+      "logSha256": "67272f83c4f06df9b267bfb3147495bea212e5d0d59b87fc7e434974a30b30e4"
+    },
+    {
+      "command": "npm run check",
+      "executable": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "run",
+        "check"
+      ],
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "counts": {},
+      "log": "final-check.log",
+      "logSha256": "02bccb7b756d873766e70654a889f0bb4cd2ac42c3334a9d23e77c699d26a519"
+    },
+    {
+      "command": "npm run build:release",
+      "executable": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "run",
+        "build:release"
+      ],
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "counts": {},
+      "log": "final-build-release.log",
+      "logSha256": "97a2d8f0b5add0a501b4d7d4e94ff298e9b120aaf1d91ec59328a1a1ce0ebb56"
+    },
+    {
+      "command": "npm run check:release",
+      "executable": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "run",
+        "check:release"
+      ],
+      "exit": 0,
+      "signal": null,
+      "error": null,
+      "counts": {},
+      "log": "final-check-release.log",
+      "logSha256": "6a0d889d7bab24ef86d3ef90953e374c6207fc5bd098ba49de9bc757afa5443b"
+    }
+  ],
+  "browser": "REUSED_PRIMARY_B20_46_R3; no browser run by M2A",
+  "publication": "NOT_RUN_M2A_PREP_ONLY",
+  "deployment": "NOT_RUN_M2A_PREP_ONLY"
+}

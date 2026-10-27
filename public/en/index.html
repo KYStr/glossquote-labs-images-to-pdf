@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Images to PDF | Order, Rotate, and Fit Photos to Pages</title>
+  <meta name="description" content="Turn local JPEG or PNG images into one ordered A4 or Letter PDF, one uncropped image per page, processed in your browser.">
+  <link rel="stylesheet" href="../styles/app.css">
+  <script type="module" src="../js/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#workspace">Skip to the image workspace</a>
+  <header class="topbar">
+    <a href="https://glossquote.com/en/index.html">Gloss Tools</a>
+    <span class="product-name">Images to PDF</span>
+    <a class="language" href="../index.html" lang="zh-Hant" hreflang="zh-Hant" title="Switching language clears this page’s data">繁體中文</a>
+  </header>
+  <main>
+    <div class="intro">
+      <h1>Put your images into one ordered PDF</h1>
+      <p>Arrange application documents, receipts, or scans into one file. Each image gets a full page with white margins.</p>
+      <p class="privacy">Processed on this page, without uploads or website storage. Leaving or switching language clears this page’s data.</p>
+    </div>
+    <noscript><p class="notice">This tool needs JavaScript to check images and build a PDF locally. Enable it and reload the page.</p></noscript>
+    <section class="workspace" id="workspace" aria-label="Image and PDF workspace">
+      <section class="sources" aria-labelledby="sources-heading">
+        <div class="section-heading"><h2 id="sources-heading">Page order</h2><button type="button" id="clear">Clear all</button></div>
+        <label class="file-label" for="files">Add JPEG / PNG images</label>
+        <input type="file" id="files" accept="image/jpeg,image/png,.jpg,.jpeg,.png" multiple aria-describedby="file-help">
+        <p id="file-help" class="help">Up to 20 images, 8 MiB each and 64 MiB total. The whole selection is checked before decoding.</p>
+        <p id="count" class="measurement">0 images · 0 MiB / 64 MiB</p>
+        <p id="list-empty" class="empty">Add images, then use Move up and Move down to set the document order.</p>
+        <ol id="image-list" aria-label="Images in PDF page order"></ol>
+      </section>
+      <section class="preview-region" aria-labelledby="preview-heading">
+        <div class="section-heading"><h2 id="preview-heading">Page preview</h2><span id="selected-page"></span></div>
+        <p id="preview-message" class="help">Add images to inspect the one-image-per-page layout here.</p>
+        <div class="paper-stage"><div id="paper" class="paper" role="img" aria-label="Paper layout summary">
+          <div id="image-fit" class="image-fit" hidden><span id="image-summary"></span><img id="photo-preview" alt="" hidden></div>
+          <span id="paper-empty" class="paper-empty">One image, one PDF page</span>
+        </div></div>
+        <p id="paper-summary" class="measurement"></p>
+        <button type="button" id="preview-photo" disabled>Preview this photo</button>
+        <p class="help">Only the selected photo is decoded for preview. Changing the page or settings releases it. Images are never cropped.</p>
+      </section>
+      <section class="settings" aria-labelledby="settings-heading">
+        <h2 id="settings-heading">Document settings</h2>
+        <fieldset><legend>Paper size</legend><label><input type="radio" name="paper" value="A4" checked> A4</label><label><input type="radio" name="paper" value="Letter"> US Letter</label></fieldset>
+        <fieldset><legend>Page orientation</legend><label><input type="radio" name="direction" value="portrait" checked> Portrait</label><label><input type="radio" name="direction" value="landscape"> Landscape</label></fieldset>
+        <p>One centered image per page, scaled to fit without cropping. White background with a fixed 10 mm margin on every side.</p>
+        <details><summary>Limits and things to know</summary><p>Static JPEG / PNG, up to 16 million pixels per image and 8,192 px on either edge. Animated images, existing PDFs, OCR, encryption, signatures, and printing are not supported.</p><p>Transparent areas become white. Photos are re-encoded as JPEG, which may slightly change image quality. Small images may be enlarged without gaining detail. Browser memory or encoding limits can also stop processing.</p></details>
+      </section>
+      <section class="actionbar" aria-label="Create and download PDF">
+        <div class="actions"><button type="button" id="generate" class="primary" disabled>Create PDF</button><button type="button" id="cancel" hidden>Cancel processing</button><button type="button" id="download" hidden>Download PDF</button></div>
+        <p id="status" role="status" aria-live="polite">Add the JPEG or PNG images to combine. You can adjust their order next.</p>
+        <p id="error" class="error" role="alert" hidden></p>
+        <progress id="progress" max="1" value="0" aria-label="Image processing progress" hidden></progress>
+        <p id="result-summary" class="measurement" hidden></p>
+        <p class="help">Download name: images-document.pdf. After downloading, check readability, page count, and order. A download already handed to the browser cannot be withdrawn. Clearing releases this page’s references; it does not delete downloaded files or guarantee memory erasure.</p>
+      </section>
+    </section>
+    <section class="faq" aria-labelledby="faq-heading">
+      <h2 id="faq-heading">Frequently asked questions</h2>
+      <details><summary>Will images be cropped or enlarged?</summary><p>Images are scaled to fit and centered without cropping. Unused page area remains white. Small images may be enlarged, without gaining detail.</p></details>
+      <details><summary>Does it use the camera’s orientation?</summary><p>It uses supported EXIF orientation first, then your extra rotation. A decoded size mismatch stops export. Check mirrors and reading direction in the photo preview.</p></details>
+      <details><summary>Will the PDF contain filenames or GPS data?</summary><p>Source filenames and photo metadata are not added. The PDF contains re-encoded page images. Names, addresses, or other details visible in the image remain visible; check them yourself.</p></details>
+    </section>
+  </main>
+  <footer>Gloss Tools by GlossQuote · Local candidate; not publicly released.</footer>
+</body>
+</html>

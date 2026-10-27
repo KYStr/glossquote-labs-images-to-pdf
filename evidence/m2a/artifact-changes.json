@@ -1,0 +1,56 @@
+{
+  "changes": [
+    {
+      "path": "release-artifacts/manifest.json",
+      "kind": "modified",
+      "before": {
+        "path": "release-artifacts/manifest.json",
+        "bytes": 4583,
+        "sha256": "b89031e973e6b0ba6aa54b2bfe2f8852e19217c669816598a82f7d645d16184a"
+      },
+      "after": {
+        "path": "release-artifacts/manifest.json",
+        "bytes": 4726,
+        "sha256": "b5b5b9f08c7821c39554098ca95a59945a5840030d54768124f52739b8027f59"
+      }
+    },
+    {
+      "path": "release-artifacts/site/_redirects",
+      "kind": "added",
+      "before": null,
+      "after": {
+        "path": "release-artifacts/site/_redirects",
+        "bytes": 65,
+        "sha256": "9e47a2579b08f461b1124de1e42a1bde7a79ca29d77401104f6f432d8be90e1e"
+      }
+    },
+    {
+      "path": "release-artifacts/site/en/index.html",
+      "kind": "modified",
+      "before": {
+        "path": "release-artifacts/site/en/index.html",
+        "bytes": 6872,
+        "sha256": "6fe37b60a9bd8764ca1d0811e3151d344c05fb8900288b7a9574e6dc9704dfe9"
+      },
+      "after": {
+        "path": "release-artifacts/site/en/index.html",
+        "bytes": 6829,
+        "sha256": "a233afe99bf3ed63f905fcbc5e684ac0853f4a01f006cb4cac8025e53dc854f5"
+      }
+    },
+    {
+      "path": "release-artifacts/site/index.html",
+      "kind": "modified",
+      "before": {
+        "path": "release-artifacts/site/index.html",
+        "bytes": 6583,
+        "sha256": "6a940a4e6d7232cad82bd41eed873de8b40e9f67ee98b9ae23ce165121832975"
+      },
+      "after": {
+        "path": "release-artifacts/site/index.html",
+        "bytes": 6540,
+        "sha256": "b2941fc9558ef01533bf0b81f439de31b650e8545fe194691c1ae82da3263e21"
+      }
+    }
+  ]
+}

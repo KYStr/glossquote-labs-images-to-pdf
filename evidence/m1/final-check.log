@@ -1,0 +1,5 @@
+
+> glossquote-labs-images-to-pdf@0.1.0-m1 check
+> node scripts/check.mjs
+
+PASS check: 13 public files; ESM syntax, local resources, preview noindex. Static checks are not browser/security proof.

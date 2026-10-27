@@ -1,0 +1,61 @@
+
+> glossquote-labs-images-to-pdf@0.1.0-m1 test
+> node --test test/*.test.mjs
+
+✔ offline UI wiring zh-Hant: choose/order/rotate/preview/build/download/stale/reset (24.3071ms)
+✔ offline UI wiring en: choose/order/rotate/preview/build/download/stale/reset (3.3516ms)
+✔ offline UI wiring: malicious filename is text, failed second source clears old result, remove/retry (3.7917ms)
+✔ offline UI wiring: setting change while encode pending, then retry stays serialized (1.8396ms)
+✔ offline UI wiring: cancel pending encode and pagehide never revive old output (1.6199ms)
+✔ offline UI wiring: missing native capabilities clearly block controls; translations match codes (1.2136ms)
+✔ offline UI wiring: download allocation failure clears result and exposes only a fixed error (0.9568ms)
+✔ A18 three sources: maximum one bitmap; close/reset before next; no source metadata (2.8808ms)
+✔ A19 cancel pending decode: wait, close, no next bitmap or PDF (3.148ms)
+✔ A19 cancel second pending encode: previously encoded page also cannot return (0.7253ms)
+✔ A20 settings generation change while toBlob is pending: no downloadable URL (0.6026ms)
+✔ decode failure/mismatch, unavailable Canvas, null/wrong MIME/bad JPEG all fail with cleanup (0.8034ms)
+✔ invalid batch never reaches decode even if fabricated metadata was supplied (0.1885ms)
+✔ rotations use explicit clockwise transforms and white canvas before draw (0.3101ms)
+✔ EXIF visual dimensions drive user rotation; mirror pixels remain a browser gate (0.3576ms)
+✔ transparent PNG follows the white flattening path (operation assertions only) (0.5081ms)
+✔ cancel after JPEG arrayBuffer settles fences the last asynchronous boundary (1.5223ms)
+✔ A16 source EXIF/canary and filename never passed to the output writer (0.7221ms)
+✔ A01 20 accepted, 21 rejected before a read/decode (1.9305ms)
+✔ A02 per-file bytes: exact hard cap and +1 (0.1716ms)
+✔ A03 20 files total: 64MiB and one extra byte (0.1353ms)
+✔ A04 magic rather than name/MIME; PNG and JPEG dimensions (0.6788ms)
+✔ A05 APNG rejected in metadata preflight (0.1869ms)
+✔ A06 exact pixel and edge limits (0.2563ms)
+✔ A07 EXIF all orientations, both endian orders, PNG eXIf (1.1774ms)
+✔ A07 invalid EXIF never falls back silently (0.3361ms)
+✔ truncated/zero/CRC/unknown critical/chunk overflow rejected (0.2696ms)
+✔ all selections preflight before use; failures identify the source, no raw errors (0.2655ms)
+✔ late preflight result is discarded after cancel or generation change (0.1642ms)
+✔ publishing never creates a URL; explicit download binds to current generation (2.0319ms)
+✔ preview/download expiry <=60s, reset/pagehide/dispose idempotent and no stale preview (0.3502ms)
+✔ repeated download clicks reuse one URL until expiry, then create one fresh URL (0.2236ms)
+✔ A08 ordering and turns serialized without mutation (1.0688ms)
+✔ A09 independent A4 1000x500 oracle (1.2258ms)
+✔ A10 Letter landscape explicit contain oracle (0.1798ms)
+✔ all supported papers contain extreme tall/wide images with margin and matching aspect (0.2025ms)
+✔ invalid numbers/settings and raised hard caps fail closed (0.5975ms)
+✔ A11 two pages, fixed object graph and caller order (2.3075ms)
+✔ A12 fake opaque JPEG stream preserves 6 exact bytes including NUL and LF (0.3373ms)
+✔ A13 precise ASCII operations and direct length (0.2056ms)
+✔ A14/A15 all xref offsets, UTF8 comment bytes, startxref and EOF (0.2354ms)
+✔ A16 fixed template and filename; user labels cannot enter the writer schema (0.4375ms)
+✔ A17 maxBytes exact length and one less reject before returning bytes (21.0406ms)
+✔ invalid schema, count, JPEG, fit and paper rejected (0.1965ms)
+✔ package stays private and dependency-free (2.6258ms)
+✔ build allowlist: exact portable assets, bytes match; unknown output is retained and rejected (68.5249ms)
+✔ build rejects unknown source, missing source, and indexing/canonical mutation (34.0921ms)
+✔ source/destination directory junctions are rejected without following them (25.1103ms)
+✔ offline handler unit: GET/HEAD/MIME/Host/method/path allowlist; no listener started (0.5316ms)
+ℹ tests 49
+ℹ suites 0
+ℹ pass 49
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 270.0963

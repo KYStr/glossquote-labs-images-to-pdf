@@ -1,0 +1,5 @@
+
+> glossquote-labs-images-to-pdf@0.1.0-m1 build
+> node scripts/build.mjs
+
+PASS preview build: 13 allowlisted files -> dist; no server started.
